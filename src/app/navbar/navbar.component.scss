@@ -1,0 +1,21 @@
+@import './../app.component.scss';
+
+.navbar-config{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    min-height: 7vh;
+    padding: 1%;
+    z-index: 9999;
+    box-shadow: 1px 1px rgb(105, 104, 104);
+
+    .logo {
+        width: 10%;
+        color: white;
+    }
+
+    .nav-input {
+        width: 15%;
+        background-color: rgba(223, 219, 219, 0.685);
+    }
+}

@@ -1,0 +1,47 @@
+.app-base {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    z-index: -999;
+    &::before{
+        background-color: rgba(245, 245, 245, 0.5);
+    }
+}
+
+.cor-fundo {
+    background-color: #FCC302;
+}
+
+.espaco-lateral {
+    padding-left: 5% !important;
+    padding-right: 5% !important;
+}
+
+.text {
+    color: white;
+    font-weight: 600;
+}
+
+.nav-color {
+    background-color: #DAAC00 !important;
+}
+
+.w {
+    &-30 {
+        width: 30% !important;
+    }
+
+    &-40 {
+        width: 40% !important;
+    }
+
+    &-60 {
+        width: 60% !important;
+    }
+
+    &-80 {
+        width: 80% !important;
+    }
+}
