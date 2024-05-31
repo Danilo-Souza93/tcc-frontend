@@ -1,12 +1,19 @@
 <div class="cor-fundo espaco-lateral justify-content-between w-100 d-flex py-5">
-  <div class="text w-50  align-self-center flex-wrap">
-    blablablablablablablablablablablabla
-    blablablablablablablabla
-    blablablablablablablabla
-    blablablablablablablabla
+  <div class="texto w-50 align-self-center flex-wrap">
+    blablablablablablablablablablablabla blablablablablablablabla
+    blablablablablablablabla blablablablablablablabla
     blablablablablablablablablablablabla
   </div>
   <div class="d-flex justify-content-center w-40">
-    <img src="../../assets/imgs/caneca-presentation.png" class="w-80"/>
+    <img src="../../assets/imgs/caneca-presentation.png" class="w-80" />
+  </div>
+</div>
+
+<div class="produto-item p-4">
+  <div *ngFor="let produto of listaProdutos" class="p-3">
+    <apresentacao-produto
+      [produto]="produto"
+      (click)="selecionarProduto(produto)"
+    ></apresentacao-produto>
   </div>
 </div>
