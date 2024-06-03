@@ -1,4 +1,4 @@
-@import './../app.component.scss';
+@import './../../../app.component.scss';
 
 .navbar-config{
     display: flex;
@@ -12,6 +12,7 @@
     .logo {
         width: 10%;
         color: white;
+        cursor: pointer;
     }
 
     .nav-input {

@@ -1,6 +1,7 @@
+import { ActivatedRoute, Router } from '@angular/router';
+import { Produto } from './../shared/models/Produto';
 import { ProdutoService } from './../shared/services/produto.service';
 import { Component, OnInit } from '@angular/core';
-import { Produto } from '../shared/models/Produto';
 
 @Component({
   selector: 'apresentacao',
@@ -8,10 +9,13 @@ import { Produto } from '../shared/models/Produto';
   styleUrls: ['./apresentacao.component.scss'],
 })
 export class ApresentacaoComponent implements OnInit {
-  listaProdutos: Produto[] = [];
+  listaProdutos = new Array<Produto>();
   temErro: boolean = false;
 
-  constructor(private produtoService: ProdutoService) {}
+  constructor(
+    private produtoService: ProdutoService,
+    private router: Router
+  ){}
 
   ngOnInit() {
     this.produtoService.getProductList().subscribe({
@@ -26,6 +30,7 @@ export class ApresentacaoComponent implements OnInit {
 
   selecionarProduto(produtoSelecionado: Produto) {
     this.produtoService.gravarProdutoSubject(produtoSelecionado);
-    //add a rota pra detalhes do produto
+    this.router.navigate(['/detalhe-produto']);
   }
+
 }

@@ -1,17 +1,23 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { NavbarComponent } from './navbar/navbar.component';
+import { DetalheProdutoComponent } from './detalhe-produto/detalhe-produto.component';
+import { AppComponent } from './app.component';
 
 const routes: Routes = [
   {
     path:'',
-    redirectTo:'/home',
-    pathMatch: 'full'
+    pathMatch: 'full',
+    redirectTo: '/home'
   },
   {
     path:'home',
-    component: NavbarComponent,
-    loadChildren: () => import('./navbar/nav-bar.module').then(m => m.NavBarModule)
+    component: AppComponent,
+    loadChildren: () => import('./apresentacao/apresentacao.module').then(m => m.ApresentacaoModule)
+  },
+  {
+    path: 'detalhe-produto',
+    component: DetalheProdutoComponent,
+    loadChildren: () => import('./detalhe-produto/detalhe-produto.module').then(m => m.DetalheProdutoModule),
   }
 ];
 

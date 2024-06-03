@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { environment } from '../../../environmennts/env-local';
 import { HttpClient } from '@angular/common/http';
-import { Observable, Subject } from 'rxjs';
+import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { Produto } from '../models/Produto';
 
 @Injectable({
@@ -11,8 +11,8 @@ export class ProdutoService {
 
   private readonly API = environment.api
 
-  private produtoSubject = new Subject<Produto>();
-
+  private produtoSubject = new BehaviorSubject<Produto>({} as Produto);
+  
   constructor(private http: HttpClient) {  }
 
   //Metodos http
@@ -21,8 +21,8 @@ export class ProdutoService {
   }
 
   //Gestão de Dados produto
-  gravarProdutoSubject(produto: Produto){
-    this.produtoSubject.next(produto);
+  gravarProdutoSubject(produtos: Produto){
+    this.produtoSubject.next(produtos);
   }
 
   pegarProdutoSubject(): Observable<Produto>{

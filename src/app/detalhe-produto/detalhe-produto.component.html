@@ -1,0 +1,36 @@
+<div class="espaco-lateral d-flex pt-5">
+    <div class="col-4 posicao">
+        <img class="w-100" src="./../../assets/imgs/caneca-presentation.png"/>
+    </div>
+
+    <div class="col-6" *ngIf="produto"> 
+      <div class="mx-4 tam-letra linha">
+        <span class="w-100 ps-2">{{produto.nome}}</span>
+      </div>
+      <div class="mx-4 d-flex flex-column">
+        <div class="ps-2 pb-2 mt-5 d-flex flex-column linha">
+          <span class="fw-bold mb-3">Descrição:</span>
+          <span>{{produto.detalhe}}</span>
+        </div>
+        <div class="ps-2 pb-2 mt-5 d-flex flex-column linha">
+          <span class="fw-bold">Por:</span>
+          <span>{{produto.valor| moedaBRL}}</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-2 p-2 d-flex flex-column justify-content-between border">
+      <div class="w-100 pb-2 linha">
+        <span class="fw-bold">Resumo da Compra</span>
+      </div>
+      <div *ngFor="let item of listaDeProdutos">
+        <span class="fw-bold">Nome:</span><a>{{item.nome}}</a>
+        <span class="fw-bold">Valor:</span><a>{{item.valor}}</a>
+        <span class="fw-bold">Quaidade</span><a>{{""}}</a>
+      </div>
+      <div>
+        <button class="my-2 btn btn-adicionar w-100" (click)="adicionarItem()">Adicionar Carrinho</button>
+        <button class="my-2 btn btn-comprar w-100">Comprar</button>
+      </div>
+    </div>
+</div>
