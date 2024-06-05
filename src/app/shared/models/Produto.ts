@@ -3,6 +3,6 @@ export interface Produto {
     nome: string;
     detalhe: string;
     quantidadeEstoque: number;
-    valor: string;
+    valor: number;
     dt_lote: string;
 }
