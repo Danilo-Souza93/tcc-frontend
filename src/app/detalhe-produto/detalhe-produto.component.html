@@ -1,4 +1,4 @@
-<div class="espaco-lateral d-flex pt-5">
+<div class="espaco-lateral d-flex flex-wrap pt-5">
   <div class="col-4 posicao">
     <img class="w-100" src="./../../assets/imgs/caneca-presentation.png" />
   </div>
@@ -24,28 +24,30 @@
       <span class="fw-bold">Resumo da Compra</span>
     </div>
     <div
-      class="d-flex flex-column flex-wrap mt-2"
+      class="d-flex justify-content-between aling-items-center flex-wrap mt-2"
       *ngFor="let item of listaDeProdutos"
     >
-      <div class="d-flex flex-wrap">
-        <span class="fw-bold me-2">Nome:</span><a>{{ item.nome }}</a>
+      <div class="d-flex flex-column ps-2">
+        <div class="d-flex flex-wrap">
+          <span class="fw-bold me-2">Nome:</span><a>{{ item.nome }}</a>
+        </div>
+        <div class="d-flex flex-wrap">
+          <span class="fw-bold me-2">Valor:</span><a>{{ item.valor | moedaBRL}}</a>
+        </div>
+        <div class="d-flex flex-wrap">
+          <span class="fw-bold me-2">Quantidade</span><a>{{ item.quantidade }}</a>
+        </div>
       </div>
-      <div class="d-flex flex-wrap">
-        <span class="fw-bold me-2">Valor:</span><a>{{ item.valor | moedaBRL}}</a>
-      </div>
-      <div class="d-flex flex-wrap">
-        <span class="fw-bold me-2">Quantidade</span><a>{{ item.quantidade }}</a>
-      </div>
-      <div>
-        <button (click)="removerItem(item)">AP</button>
-        <button (click)="reduzirItem(item)"> - </button>
+      <div class="d-flex flex-column">
+        <button class="btn btn-remover" (click)="reduzirItem(item)"> - </button>
+        <button class="btn btn-apagar" (click)="removerItem(item)"><img src="./../../assets/imgs/trash.svg"/></button>
       </div>
     </div>
     <div>
       <button class="my-2 btn btn-adicionar w-100" (click)="adicionarItem()">
         Adicionar Carrinho
       </button>
-      <button class="my-2 btn btn-comprar w-100">Comprar</button>
+      <button class="my-2 btn btn-comprar w-100" (click)="comprar()">Comprar</button>
     </div>
   </div>
 </div>

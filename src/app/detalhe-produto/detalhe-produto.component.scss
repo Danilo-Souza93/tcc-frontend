@@ -16,7 +16,7 @@
 
 .posicao {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     justify-content: center;
     margin-top: 5%;
 }
@@ -32,5 +32,19 @@
 
     &-comprar {
         background-color: #DAAC00;
+    }
+
+    &-apagar{ 
+        background-color: unset;
+    }
+
+    &-remover{
+        background-color: unset;
+        color: black;
+        font-size: 32px;
+        font-weight: bold;
+        height: 36px;
+        display: flex;
+        align-items: center;
     }
 }

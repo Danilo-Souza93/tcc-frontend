@@ -69,4 +69,8 @@ export class DetalheProdutoComponent implements OnInit, OnDestroy {
     this.vendaService.removeItemCompra(item);
     this.carregarCarrinho();
   }
+
+  comprar() {
+    this.router.navigate(['/compra']);
+  }
 }

@@ -1,0 +1,233 @@
+<div class="stepper-wrapper">
+  <div
+    class="stepper-item"
+    [ngClass]="currentStep > 1 ? 'completed' : 'active'"
+  >
+    <div class="step-counter">1</div>
+    <div class="step-name">Dados Pessoais</div>
+  </div>
+  <div
+    class="stepper-item"
+    [ngClass]="currentStep > 2 ? 'completed' : 'active'"
+  >
+    <div class="step-counter">2</div>
+    <div class="step-name">Endereço</div>
+  </div>
+  <div
+    class="stepper-item"
+    [ngClass]="currentStep > 3 ? 'completed' : 'active'"
+  >
+    <div class="step-counter">3</div>
+    <div class="step-name">Dados de Pagamento</div>
+  </div>
+</div>
+
+<form [formGroup]="dadosForm" >
+  <div
+    class="espaco-lateral d-flex justify-content-center align-items-center mt-5 w-100"
+    *ngIf="currentStep == 1"
+  >
+    <div formGroupName="dadosPessoais" class="d-flex flex-column">
+      <h1 class="mb-4">Dados Pessoais</h1>
+  
+      <div class="mb-4">
+        <label class="ps-2" for="nome">
+          <h5>Nome</h5>
+        </label>
+        <input
+          id="nome"
+          class="ps-2 form-control w-100 input"
+          [class.error]="!isNomeValido"
+          formControlName="nome"
+          placeholder="Primeiro Nome"
+          maxlength="30"
+          (keyup)="nomeValidation()"
+        />
+        <div class="d-flex flex-column error" *ngIf="!isNomeValido">
+          <span>*O nome deve conter no máximo 30 caractere;</span>
+          <span>*O nome eve conter no minimo 3 caractere;</span>
+          <span>*O nome não pode conter numeros;</span>
+        </div>
+      </div>
+  
+      <div class="mb-4">
+        <label class="ps-2" for="sobrenome">
+          <h5>Sobrenome</h5>
+        </label>
+        <input
+          id="sobrenome"
+          class="ps-2 form-control w-100 input"
+          [class.error]="!isSobrenomeValido"
+          [(ngModel)]="dadosPessoais.sobrenome"
+          placeholder="Sobre Nome"
+          maxlength="30"
+          (keyup)="sobrenomeValidation()"
+        />
+        <div class="d-flex flex-column error" *ngIf="!isSobrenomeValido">
+          <span>*O sobrenome deve conter no máximo 30 caractere;</span>
+          <span>*O sobrenome deve conter no minimo 3 caractere;</span>
+          <span>*O sobrenome não pode conter numeros;</span>
+        </div>
+      </div>
+  
+      <div class="mb-4">
+        <label class="ps-2" for="cpf">
+          <h5>CPF</h5>
+        </label>
+        <input
+          id="cpf"
+          class="ps-2 form-control w-100 input"
+          [class.error]="
+            !dadosForm.get('dadosPessoais.cpf')?.valid && 
+            (dadosForm.get('dadosPessoais.cpf')?.touched || 
+            dadosForm.get('dadosPessoais.cpf')?.dirty)"
+          formControlName="cpf"
+          placeholder="CPF"
+          maxlength="11"
+        />
+        <div class="d-flex flex-column error" 
+          *ngIf="
+          !dadosForm.get('dadosPessoais.cpf')?.valid && 
+          (dadosForm.get('dadosPessoais.cpf')?.touched || 
+          dadosForm.get('dadosPessoais.cpf')?.dirty)"
+        >
+          <span>*CPF Invalido</span>
+        </div>
+      </div>
+  
+      <button class="btn-proximo" (click)="nextStep()">Próximo</button>
+    </div>
+  </div>
+  
+  <div
+    class="espaco-lateral d-flex justify-content-center align-items-center mt-5 w-100"
+    *ngIf="currentStep == 2"
+  >
+    <div class="d-flex flex-column w-50">
+      <h1 class="mb-4 text-center">Endereço de Entrega</h1>
+      <div class="mb-4">
+        <label class="ps-2" for="cep">
+          <h5>CEP</h5>
+        </label>
+        <div class="d-flex justify-content-between align-items-center">
+          <input
+            id="cep"
+            class="ps-2 form-control w-70 input"
+            [class.error]="!isCepValido"
+            [(ngModel)]="endereco.cep"
+            placeholder="CEP"
+            maxlength="8"
+            (keyup)="cepValidator()"
+          />
+          <div class="w-20">
+            <button (click)="buscarCep()"
+            class="btn btn-busca"
+            [disabled]="!isCepValido || endereco.cep.length != 8">
+              <img class="w-100" src="./../../assets/imgs/lupa.png">
+            </button>
+          </div>
+        </div>
+        <div class="d-flex flex-column error" *ngIf="!isCepValido">
+          <span>*O CEP deve conter 8 caractere;</span>
+          <span>*O CEP deve conter somente numeros;</span>
+        </div>
+      </div>
+  
+      <div class="d-flex justify-content-between">
+        <div class="mb-4 w-70">
+          <label class="ps-2" for="rua">
+            <h5>Rua</h5>
+          </label>
+          <input
+            id="rua"
+            class="ps-2 form-control w-100 input"
+            [class.error]="!isRuaValido"
+            [(ngModel)]="endereco.rua"
+            placeholder="Logradouro"
+            maxlength="200"
+            (keyup)="ruaValidator()"
+          />
+          <div class="d-flex flex-column error" *ngIf="!isRuaValido">
+            <span>*Nome da rua é necessario;</span>
+          </div>
+        </div>
+        <div class="w-20 mb-4">
+          <label class="ps-2" for="numero">
+            <h5>Número</h5>
+          </label>
+          <input
+            id="numero"
+            class="w-100 ps-2 input"
+            [class.error]="!isNumeroValidator"
+            [(ngModel)]="endereco.numero"
+            placeholder="Numero"
+            maxlength="200"
+            (keyup)="numeroValidator()"
+          />
+          <div class="d-flex flex-column error" *ngIf="!isNumeroValidator">
+            <span>*Numero é necessario</span>
+          </div>
+        </div>
+      </div>
+  
+      <div class="mb-4">
+        <label class="ps-2" for="bairro">
+          <h5>Bairro</h5>
+        </label>
+        <input
+          id="bairro"
+          class="ps-2 form-control w-100 input"
+          [(ngModel)]="endereco.bairro"
+          placeholder="Bairro"
+          maxlength="200"
+        />
+        <!-- <div class="d-flex flex-column error" *ngIf="">
+          <span>*Bairro é necessario</span>
+        </div> -->
+      </div>
+  
+      <div class="d-flex justify-content-between">
+        <div class="mb-4 w-70">
+          <label class="ps-2" for="cidade">
+            <h5>Cidade</h5>
+          </label>
+          <input
+            id="cidade"
+            class="ps-2 form-control w-100 input"
+            [class.error]=""
+            [(ngModel)]="endereco.cidade"
+            placeholder="Cidade"
+            maxlength="200"
+          />
+          <!-- <div class="d-flex flex-column error" *ngIf="!isCpfValidator">
+            <span>*Cidade é necessario;</span>
+          </div> -->
+        </div>
+        <div class="mb-4 w-20">
+          <label class="ps-2" for="estado">
+            <h5>Estado</h5>
+          </label>
+          <select id="estado" class="input" [(ngModel)]="endereco.estado">
+            <option value="" disabled selected>Selecione</option>
+            <option *ngFor="let estado of estadosList" [value]="estado">{{estado}}</option>
+          </select>
+          <!-- <div class="d-flex flex-column error" *ngIf="!isCpfValidator">
+            <span>*Estado é necessario;</span>
+          </div> -->
+        </div>
+      </div>
+  
+      <button class="btn-proximo" (click)="nextStep()">Próximo</button>
+    </div>
+  </div>
+</form>
+
+<div
+  class="espaco-lateral d-flex justify-content-center align-items-center mt-5 w-100"
+  *ngIf="currentStep == 3"
+>
+  <div class="d-flex flex-column w-100">
+    <h1 class="mb-4 text-center">Dados de Pagamento</h1>
+    <app-cartao></app-cartao>
+  </div>
+</div>

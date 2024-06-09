@@ -82,4 +82,7 @@ export class VendaService {
     return this.vendaProdutoSubject.asObservable();
   }
 
+  montarVendaa() {
+    
+  }
 }

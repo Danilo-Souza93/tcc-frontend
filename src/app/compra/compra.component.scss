@@ -1,0 +1,114 @@
+@import "./../app.component.scss";
+
+.stepper-wrapper {
+    margin-top: 50px;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+
+    .stepper-item {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        flex: 1;
+
+        &::before {
+            position: absolute;
+            content: "";
+            border-bottom: 2px solid #ccc;
+            width: 100%;
+            top: 20px;
+            left: -50%;
+            z-index: 2;
+        }
+
+        &::after {
+            position: absolute;
+            content: "";
+            border-bottom: 2px solid #ccc;
+            width: 100%;
+            top: 20px;
+            left: 50%;
+            z-index: 2;
+        }
+
+        .step-counter {
+            position: relative;
+            z-index: 5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #ccc;
+            margin-bottom: 6px;
+        }
+
+        &.active {
+            font-weight: bold;
+        }
+
+        &.completed {
+            .step-counter {
+                background-color: #FCC302;
+            }
+
+            &::after {
+                position: absolute;
+                content: "";
+                border-bottom: 2px solid #FCC302;
+                width: 100%;
+                top: 20px;
+                left: 50%;
+                z-index: 3;
+            }
+        }
+
+        &:first-child::before {
+            content: none;
+        }
+
+        &:last-child::after {
+            content: none;
+        }
+    }
+}
+
+.error {
+    color: red;
+    font-size: 14px;
+}
+
+.input {
+    border-radius: 20px;
+    height: 4vh;
+    &:focus {
+        border-color: rgb(252, 195, 2) !important;
+        box-shadow: 0px 0px 10px rgba(252, 195, 2, 0.8);
+    }
+
+    &.error {
+        border-color: red;
+        box-shadow: 0px 0px 10px rgba(255, 0, 0, 0.8);
+    }
+}
+
+.btn {
+    border: none;
+    &:hover {
+        cursor: pointer;
+    }
+
+    &-busca {
+        width: 80%;
+    }
+}
+
+.btn-proximo {
+    border: none;
+    border-radius: 20px;
+    color: white;
+    background-color: rgba(252, 195, 2);
+}
