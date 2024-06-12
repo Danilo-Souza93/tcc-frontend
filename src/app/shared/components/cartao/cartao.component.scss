@@ -30,6 +30,11 @@
         border: transparent;
         text-transform: uppercase;
         text-wrap: wrap;
+
+        &.error {
+            border-color: red;
+            box-shadow: 0px 0px 10px rgba(255, 0, 0, 0.8);
+        }
     }
 }
 
@@ -61,10 +66,8 @@
     justify-content: space-between;
 }
 
-.dropdown-selected img {
-    width: 30px;
-    height: 30px;
-    margin-left: 10px;
+.img {
+    width: 60px;
 }
 
 .dropdown-list {
@@ -95,30 +98,11 @@
     background-color: #f1f1f1;
 }
 
-.selected-img {
-    width: 30px;
-    height: 30px;
-    margin-left: 10px;
-}
-
 .bandeira {
     width: 52px;
 }
 
-.select-1 {
-    font-size: 18px;
-    font-weight: 600;
-    color: rgba(0, 0, 0);
-    background-color: transparent;
-    border: none;
-    height: 3vh;
-}
-
-.select-2 {
-    font-size: 12px;
-    font-weight: 600;
-    color: rgba(0, 0, 0);
-    background-color: transparent;
-    border: none;
-    height: 3vh;
+.select {
+    border-radius: 5px;
+    padding-left: 5px;
 }

@@ -71,7 +71,8 @@ export class VendaService {
     
     if(produtoCarrinho){
       produtoCarrinho.quantidade -= 1;
-
+      produtoCarrinho.valor = produtoCarrinho.quantidade * (produto.valor / (produto.quantidade + 1));
+      
       if(produtoCarrinho.quantidade == 0) this.removerProduto(produto);
     }
 

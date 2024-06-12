@@ -5,6 +5,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CompraComponent } from './compra.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MascaraCpfDirective } from '../shared/diretivas/mascara-cpf.directive';
 
 const routes: Routes = [
   {

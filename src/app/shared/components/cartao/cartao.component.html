@@ -1,30 +1,92 @@
 <div class="container d-flex flex-column justify-content-between">
   <div class="d-flex justify-content-between w-100">
     <div class="d-flex flex-column align-items-center">
-      <select class="select-2" [(ngModel)]="dadosPagamento.cartao.bandeira" (change)="selectImg($event)">
+      <input
+        *ngIf="!imgSelecionada" 
+        class="form-control"
+        placeholder="Bandeira"
+      />
+      <img *ngIf="imgSelecionada" class="img" src="{{imgSelecionada}}">
+    </div>
+    <div class="d-flex align-items-center w-30">
+      <input 
+      class="form-control text-end"
+      placeholder="Tipo"
+      disabled
+      [value]="dadosPagamento.cartao.tipo"/>
+    </div>
+  </div>
+
+  <div class="d-flex flex-column w-100 end-position">
+    <div class="d-flex justify-content-between">
+      <div class="d-flex flex-column mb-3 w-100">
+        <input
+          class="form-control"
+          placeholder="Número do Cartão"
+          disabled
+          [value]="paymentForm.get('cardNumber')?.value"
+        />
+      </div>
+      <div class="d-flex flex-column mb-3 w-40">
+        <input
+          class="form-control"
+          placeholder="CVV"
+          disabled
+          [value]="paymentForm.get('cvv')?.value"
+        />
+      </div>
+    </div>
+
+    <div class="d-flex">
+      <div class="d-flex flex-column w-100">
+        <input
+          class="form-control text-start"
+          placeholder="Titular"
+          disabled
+          [value]="paymentForm.get('cardHolder')?.value"
+        />
+      </div>
+      <div class="w-40">
+        <input
+          class="form-control"
+          placeholder="MM/AA"
+          disabled
+          [value]="paymentForm.get('expirationDate')?.value"
+        />
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="espaco-lateral d-flex flex-column justify-content-center align-items-center mt-5 p-5 w-100">
+  <div class="d-flex w-70 mb-4">
+    <div class="d-flex flex-column  me-5">
+      <label class="form-label">Bandeira</label>
+      <select class="select" [(ngModel)]="dadosPagamento.cartao.bandeira" (change)="selectImg($event)">
         <option value="" disabled selected>Bandeira</option>
         <option *ngFor="let bandeira of listaBandeira" [value]="bandeira.valor">{{bandeira.valor}}</option>
       </select>
-      <div class="bandeira" [ngClass]="imgSelecionada? 'show': 'hidden'">
-        <img class="w-100" src={{imgSelecionada}}>
-      </div>
     </div>
-    <div class="d-flex align-items-center">
-      <select class="select-1" [(ngModel)]="dadosPagamento.cartao.tipo">
+    <div class="d-flex flex-column">
+      <label class="form-label">Tipo Pagamento</label>
+      <select class="select" [(ngModel)]="dadosPagamento.cartao.tipo">
         <option value="" disabled selected>Tipo</option>
         <option *ngFor="let tipo of tipoCartao" [value]="tipo">{{tipo}}</option>
       </select>
     </div>
   </div>
-  <form [formGroup]="paymentForm" (ngSubmit)="onSubmit()">
-    <div class="d-flex flex-column w-100 end-position">
+
+  <form class="w-70" [formGroup]="paymentForm" (ngSubmit)="onSubmit()">
+    <div class="d-flex flex-column justify-content-center w-100 end-position">
       <div class="d-flex justify-content-between">
-        <div class="d-flex flex-column mb-3 w-100">
-          <label for="cardNumber" class="form-label">Digite Número do Cartão</label>
+        <div class="d-flex flex-column mb-3 w-60">
+          <label for="cardNumber" class="form-label">Número do Cartão</label>
           <input
             id="cardNumber"
             formControlName="cardNumber"
             class="form-control"
+            [class.error]="paymentForm.get('cardNumber')?.invalid &&
+              (paymentForm.get('cardNumber')?.dirty || paymentForm.get('cardNumber')?.touched)"
             placeholder="Digite o Número do Cartão"
             maxlength="16"
           />
@@ -32,10 +94,8 @@
             *ngIf="
               paymentForm.get('cardNumber')?.invalid &&
               (paymentForm.get('cardNumber')?.dirty ||
-                paymentForm.get('cardNumber')?.touched)
-            "
-            class="text-danger"
-          >
+              paymentForm.get('cardNumber')?.touched)"
+            class="text-danger">
             <div *ngIf="paymentForm.get('cardNumber')?.errors?.['required']">
               Número do cartão é obrigatório.
             </div>
@@ -44,19 +104,19 @@
             </div>
           </div>
         </div>
-        <div class="d-flex flex-column mb-3 w-40">
+        <div class="d-flex flex-column mb-3 w-30">
           <label for="cvv" class="form-label">CVV</label>
           <input
             id="cvv"
             formControlName="cvv"
             class="form-control"
+            [class.error]="paymentForm.get('cvv')?.invalid &&
+              (paymentForm.get('cvv')?.dirty || paymentForm.get('cvv')?.touched)"
             placeholder="CVV"
           />
           <div
-            *ngIf="
-              paymentForm.get('cvv')?.invalid &&
-              (paymentForm.get('cvv')?.dirty || paymentForm.get('cvv')?.touched)
-            "
+            *ngIf="paymentForm.get('cvv')?.invalid &&
+              (paymentForm.get('cvv')?.dirty || paymentForm.get('cvv')?.touched)"
             class="text-danger"
           >
             <div *ngIf="paymentForm.get('cvv')?.errors?.['required']">
@@ -69,21 +129,20 @@
         </div>
       </div>
 
-      <div class="d-flex">
-        <div class="d-flex flex-column w-100 pe-4">
+      <div class="d-flex justify-content-between">
+        <div class="d-flex flex-column w-60">
           <label for="cardHolder" class="form-label">Digite o Titular</label>
           <input
             id="cardHolder"
             formControlName="cardHolder"
             class="form-control text-start"
-            placeholder="Digite o Titular"
+            [class.error]="paymentForm.get('cardHolder')?.invalid &&
+            (paymentForm.get('cardHolder')?.dirty || paymentForm.get('cardHolder')?.touched)"
+            placeholder="Titular"
           />
           <div
-            *ngIf="
-              paymentForm.get('cardHolder')?.invalid &&
-              (paymentForm.get('cardHolder')?.dirty ||
-                paymentForm.get('cardHolder')?.touched)
-            "
+            *ngIf="paymentForm.get('cardHolder')?.invalid &&
+              (paymentForm.get('cardHolder')?.dirty || paymentForm.get('cardHolder')?.touched)"
             class="text-danger"
           >
             <div *ngIf="paymentForm.get('cardHolder')?.errors?.['required']">
@@ -91,22 +150,22 @@
             </div>
           </div>
         </div>
-        <div class="w-40">
+        <div class="w-30">
           <label for="expirationDate" class="form-label">Data de Validade</label>
           <input
             id="expirationDate"
             formControlName="expirationDate"
             class="form-control"
+            [class.error]="paymentForm.get('expirationDate')?.invalid &&
+              (paymentForm.get('expirationDate')?.dirty || paymentForm.get('expirationDate')?.touched)"
             placeholder="MM/AA"
+            MaskDate
+            EspecialCharPrevent
           />
           <div
-            *ngIf="
-              paymentForm.get('expirationDate')?.invalid &&
-              (paymentForm.get('expirationDate')?.dirty ||
-                paymentForm.get('expirationDate')?.touched)
-            "
-            class="text-danger"
-          >
+            *ngIf="paymentForm.get('expirationDate')?.invalid &&
+              (paymentForm.get('expirationDate')?.dirty || paymentForm.get('expirationDate')?.touched)"
+            class="text-danger">
             <div *ngIf="paymentForm.get('expirationDate')?.errors?.['required']">
               Data de validade é obrigatória.
             </div>
@@ -117,12 +176,10 @@
         </div>
       </div>
     </div>
+    <button
+      type="submit"
+      class="btn btn-primary mt-5"
+      [disabled]="paymentForm.invalid">
+      Proximo</button>
   </form>
 </div>
-<button
-  type="submit"
-  class="btn btn-primary"
-  [disabled]="paymentForm.invalid"
->
-  Pagar
-</button>

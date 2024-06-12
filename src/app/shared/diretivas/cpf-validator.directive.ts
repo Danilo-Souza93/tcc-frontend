@@ -27,11 +27,11 @@ export function cpfValidator(): ValidatorFn {
 }
 
 function validateCPF(cpf: string): boolean {
-  //valida existencia
-  if (!cpf) return false;
   
-  //valida tamanho
-  cpf = cpf.replace(/[^\d]+/g, '');
+  if (!cpf) return false;
+
+  // Remover caracteres não numéricos (pontos e hífen)
+  cpf = cpf.replace(/[^\d]/g, '');
   if (cpf.length !== 11) return false;
 
   // Elimina CPFs inválidos conhecidos

@@ -37,16 +37,19 @@
         <input
           id="nome"
           class="ps-2 form-control w-100 input"
-          [class.error]="!isNomeValido"
+          [class.error]="
+            !dadosForm.get('dadosPessoais.nome')?.valid && 
+            (dadosForm.get('dadosPessoais.nome')?.touched || dadosForm.get('dadosPessoais.nome')?.dirty)"
           formControlName="nome"
           placeholder="Primeiro Nome"
           maxlength="30"
-          (keyup)="nomeValidation()"
         />
-        <div class="d-flex flex-column error" *ngIf="!isNomeValido">
-          <span>*O nome deve conter no máximo 30 caractere;</span>
-          <span>*O nome eve conter no minimo 3 caractere;</span>
-          <span>*O nome não pode conter numeros;</span>
+        <div class="d-flex flex-column error" 
+          *ngIf="
+          !dadosForm.get('dadosPessoais.nome')?.valid && 
+          (dadosForm.get('dadosPessoais.nome')?.touched || dadosForm.get('dadosPessoais.nome')?.dirty)"
+        >
+        <span>*Nome invalido</span>
         </div>
       </div>
   
@@ -57,16 +60,19 @@
         <input
           id="sobrenome"
           class="ps-2 form-control w-100 input"
-          [class.error]="!isSobrenomeValido"
-          [(ngModel)]="dadosPessoais.sobrenome"
+          [class.error]=" 
+            !dadosForm.get('dadosPessoais.sobrenome')?.valid && 
+            (dadosForm.get('dadosPessoais.sobrenome')?.touched || dadosForm.get('dadosPessoais.sobrenome')?.dirty)"
+          formControlName="sobrenome"
           placeholder="Sobre Nome"
           maxlength="30"
-          (keyup)="sobrenomeValidation()"
         />
-        <div class="d-flex flex-column error" *ngIf="!isSobrenomeValido">
-          <span>*O sobrenome deve conter no máximo 30 caractere;</span>
-          <span>*O sobrenome deve conter no minimo 3 caractere;</span>
-          <span>*O sobrenome não pode conter numeros;</span>
+        <div class="d-flex flex-column error" 
+          *ngIf="
+          !dadosForm.get('dadosPessoais.sobrenome')?.valid && 
+          (dadosForm.get('dadosPessoais.sobrenome')?.touched || dadosForm.get('dadosPessoais.sobrenome')?.dirty)"
+        >
+          <span>*Sobrenome invalido</span>
         </div>
       </div>
   
@@ -79,23 +85,53 @@
           class="ps-2 form-control w-100 input"
           [class.error]="
             !dadosForm.get('dadosPessoais.cpf')?.valid && 
-            (dadosForm.get('dadosPessoais.cpf')?.touched || 
-            dadosForm.get('dadosPessoais.cpf')?.dirty)"
+            (dadosForm.get('dadosPessoais.cpf')?.touched || dadosForm.get('dadosPessoais.cpf')?.dirty)"
           formControlName="cpf"
           placeholder="CPF"
-          maxlength="11"
+          maxlength="14"
+          MascaraCpf
+          EspecialCharPreventDirective
         />
         <div class="d-flex flex-column error" 
           *ngIf="
           !dadosForm.get('dadosPessoais.cpf')?.valid && 
-          (dadosForm.get('dadosPessoais.cpf')?.touched || 
-          dadosForm.get('dadosPessoais.cpf')?.dirty)"
+          (dadosForm.get('dadosPessoais.cpf')?.touched || dadosForm.get('dadosPessoais.cpf')?.dirty)"
         >
           <span>*CPF Invalido</span>
         </div>
       </div>
-  
-      <button class="btn-proximo" (click)="nextStep()">Próximo</button>
+      
+      <div class="mb-4">
+        <label class="ps-2" for="email">
+          <h5>E-mail</h5>
+        </label>
+        <input
+          id="email"
+          class="ps-2 form-control w-100 input"
+          [class.error]="
+            !dadosForm.get('dadosPessoais.email')?.valid && 
+            (dadosForm.get('dadosPessoais.email')?.touched || dadosForm.get('dadosPessoais.email')?.dirty)"
+          formControlName="email"
+          placeholder="email@example.com"
+          maxlength="30"
+        />
+        <div class="d-flex flex-column error" 
+          *ngIf="
+          !dadosForm.get('dadosPessoais.email')?.valid && 
+          (dadosForm.get('dadosPessoais.email')?.touched || dadosForm.get('dadosPessoais.email')?.dirty)"
+        >
+          <span>*E-mail Invalido</span>
+        </div>
+      </div>
+
+      <button 
+        class="btn-proximo" 
+        [disabled]="!dadosForm.get('dadosPessoais')?.valid"
+        [class.disabled]="!dadosForm.get('dadosPessoais')?.valid"
+        (click)="nextStep()"
+      >
+        Próximo
+      </button>
     </div>
   </div>
   
@@ -103,7 +139,7 @@
     class="espaco-lateral d-flex justify-content-center align-items-center mt-5 w-100"
     *ngIf="currentStep == 2"
   >
-    <div class="d-flex flex-column w-50">
+    <div formGroupName="endereco" class="d-flex flex-column w-50">
       <h1 class="mb-4 text-center">Endereço de Entrega</h1>
       <div class="mb-4">
         <label class="ps-2" for="cep">
@@ -113,23 +149,28 @@
           <input
             id="cep"
             class="ps-2 form-control w-70 input"
-            [class.error]="!isCepValido"
-            [(ngModel)]="endereco.cep"
+            [class.error]="
+              !dadosForm.get('endereco.cep')?.valid && 
+              (dadosForm.get('endereco.cep')?.touched ||  dadosForm.get('endereco.cep')?.dirty)"
+            formControlName="cep"
             placeholder="CEP"
             maxlength="8"
-            (keyup)="cepValidator()"
+            EspecialCharPrevent
           />
           <div class="w-20">
             <button (click)="buscarCep()"
-            class="btn btn-busca"
-            [disabled]="!isCepValido || endereco.cep.length != 8">
+              class="btn btn-busca"
+              [disabled]="
+              !dadosForm.get('endereco.cep')?.valid">
               <img class="w-100" src="./../../assets/imgs/lupa.png">
             </button>
           </div>
         </div>
-        <div class="d-flex flex-column error" *ngIf="!isCepValido">
-          <span>*O CEP deve conter 8 caractere;</span>
-          <span>*O CEP deve conter somente numeros;</span>
+        <div class="d-flex flex-column error" 
+          *ngIf="
+            !dadosForm.get('endereco.cep')?.valid&& 
+            (dadosForm.get('endereco.cep')?.touched || dadosForm.get('endereco.cep')?.dirty)">
+          <span>*CEP invalido</span>
         </div>
       </div>
   
@@ -141,14 +182,20 @@
           <input
             id="rua"
             class="ps-2 form-control w-100 input"
-            [class.error]="!isRuaValido"
-            [(ngModel)]="endereco.rua"
+            [class.error]="
+              !dadosForm.get('endereco.rua')?.valid && 
+              (dadosForm.get('endereco.rua')?.touched ||  dadosForm.get('endereco.rua')?.dirty)"
+            formControlName="rua"
             placeholder="Logradouro"
             maxlength="200"
-            (keyup)="ruaValidator()"
+            EspecialCharPrevent
           />
-          <div class="d-flex flex-column error" *ngIf="!isRuaValido">
-            <span>*Nome da rua é necessario;</span>
+          <div class="d-flex flex-column error" 
+            *ngIf="
+              !dadosForm.get('endereco.rua')?.valid && 
+              (dadosForm.get('endereco.rua')?.touched ||  dadosForm.get('endereco.rua')?.dirty)"
+          >
+            <span>*Nome da rua é necessario</span>
           </div>
         </div>
         <div class="w-20 mb-4">
@@ -157,14 +204,20 @@
           </label>
           <input
             id="numero"
-            class="w-100 ps-2 input"
-            [class.error]="!isNumeroValidator"
-            [(ngModel)]="endereco.numero"
+            class="w-100 form-control ps-2 input"
+            [class.error]="
+              !dadosForm.get('endereco.numero')?.valid && dadosForm.get('endereco.numero')?.value > 0 &&
+              (dadosForm.get('endereco.numero')?.touched ||  dadosForm.get('endereco.numero')?.dirty)"
+            formControlName="numero"
             placeholder="Numero"
-            maxlength="200"
-            (keyup)="numeroValidator()"
+            maxlength="10"
+            EspecialCharPrevent
           />
-          <div class="d-flex flex-column error" *ngIf="!isNumeroValidator">
+          <div class="d-flex flex-column error" 
+            *ngIf="
+            !dadosForm.get('endereco.numero')?.valid &&
+            (dadosForm.get('endereco.numero')?.touched ||  dadosForm.get('endereco.numero')?.dirty)"
+          >
             <span>*Numero é necessario</span>
           </div>
         </div>
@@ -177,13 +230,21 @@
         <input
           id="bairro"
           class="ps-2 form-control w-100 input"
-          [(ngModel)]="endereco.bairro"
+          [class.error]="
+            !dadosForm.get('endereco.bairro')?.valid &&
+            (dadosForm.get('endereco.bairro')?.touched || dadosForm.get('endereco.bairro')?.dirty)"
+          formControlName="bairro"
           placeholder="Bairro"
           maxlength="200"
+          EspecialCharPrevent
         />
-        <!-- <div class="d-flex flex-column error" *ngIf="">
-          <span>*Bairro é necessario</span>
-        </div> -->
+        <div class="d-flex flex-column error" 
+          *ngIf="
+          !dadosForm.get('endereco.bairro')?.valid && 
+          (dadosForm.get('endereco.bairro')?.touched || dadosForm.get('endereco.bairro')?.dirty)"
+        >
+          <span>*Bairro invalido</span>
+        </div>
       </div>
   
       <div class="d-flex justify-content-between">
@@ -194,30 +255,48 @@
           <input
             id="cidade"
             class="ps-2 form-control w-100 input"
-            [class.error]=""
-            [(ngModel)]="endereco.cidade"
+            [class.error]="
+              !dadosForm.get('endereco.cidade')?.valid &&
+              (dadosForm.get('endereco.cidade')?.touched || dadosForm.get('endereco.cidade')?.dirty)"
+            formControlName="cidade"
             placeholder="Cidade"
             maxlength="200"
           />
-          <!-- <div class="d-flex flex-column error" *ngIf="!isCpfValidator">
-            <span>*Cidade é necessario;</span>
-          </div> -->
+          <div class="d-flex flex-column error" 
+            *ngIf="!dadosForm.get('endereco.cidade')?.valid &&
+              (dadosForm.get('endereco.cidade')?.touched || dadosForm.get('endereco.cidade')?.dirty)">
+            <span>*Cidade é necessário</span>
+          </div>
         </div>
         <div class="mb-4 w-20">
           <label class="ps-2" for="estado">
             <h5>Estado</h5>
           </label>
-          <select id="estado" class="input" [(ngModel)]="endereco.estado">
+          <select 
+            id="estado" 
+            class="input" 
+            [class.error]="
+              !dadosForm.get('endereco.estado')?.valid && 
+              (dadosForm.get('endereco.estado')?.touched || dadosForm.get('endereco.estado')?.dirty)"
+            formControlName="estado"
+          >
             <option value="" disabled selected>Selecione</option>
             <option *ngFor="let estado of estadosList" [value]="estado">{{estado}}</option>
           </select>
-          <!-- <div class="d-flex flex-column error" *ngIf="!isCpfValidator">
-            <span>*Estado é necessario;</span>
-          </div> -->
+          <div class="d-flex flex-column error" 
+            *ngIf="
+            !dadosForm.get('endereco.cidade')?.valid && 
+            (dadosForm.get('endereco.estado')?.touched || dadosForm.get('endereco.estado')?.dirty)"
+          >
+            <span>*Estado é necessario</span>
+          </div>
         </div>
       </div>
   
-      <button class="btn-proximo" (click)="nextStep()">Próximo</button>
+      <button class="btn-proximo" 
+        [disabled]="!dadosForm.get('endereco')?.valid" 
+        (click)="nextStep()"
+      >Próximo</button>
     </div>
   </div>
 </form>
@@ -228,6 +307,12 @@
 >
   <div class="d-flex flex-column w-100">
     <h1 class="mb-4 text-center">Dados de Pagamento</h1>
-    <app-cartao></app-cartao>
+    <app-cartao (nextStep)="nextStep()"></app-cartao>
   </div>
+</div>
+
+<div class="espaco-lateral d-flex justify-content-center align-items-center mt-5 w-100"
+    *ngIf="currentStep == 4">
+    <h1 class="mb-4 text-center">Resumo da Compra</h1>
+    
 </div>

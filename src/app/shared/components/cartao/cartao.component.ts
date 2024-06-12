@@ -1,5 +1,5 @@
 import { DadosPagamento } from './../../models/DadosPagamento';
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output, output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { BANDEIRA } from '../../models/Bandeira';
 
@@ -9,7 +9,9 @@ import { BANDEIRA } from '../../models/Bandeira';
   styleUrls: ['./cartao.component.scss']
 })
 export class CartaoComponent implements OnInit {
-  
+
+  @Output() nextStep = new EventEmitter<void>();
+
   paymentForm: FormGroup;
   tipoCartao: Array<string>;
   listaBandeira = BANDEIRA;
@@ -41,21 +43,16 @@ export class CartaoComponent implements OnInit {
   }
 
   onSubmit(): void {
-    if (this.paymentForm.valid) {
-      console.log('Form Submitted', this.paymentForm.value);
-    } else {
-      console.log('Form is invalid');
-    }
+    this.dadosPagamento = this.paymentForm?.value;
+    this.nextStep.emit();
   }
 
   selectImg(e: Event): void{
-    const opcao = e.target as HTMLSelectElement
+    const opcao = e.target as HTMLSelectElement;
     if(opcao){
       const selecao = opcao.value;
       this.imgSelecionada = this.listaBandeira.find(x => x.valor === selecao)?.img;
-  }
     }
-    
-    
+  }
 
 }

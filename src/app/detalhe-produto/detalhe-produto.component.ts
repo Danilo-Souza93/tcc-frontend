@@ -21,13 +21,13 @@ export class DetalheProdutoComponent implements OnInit, OnDestroy {
 
   constructor(
     private produtoService: ProdutoService,
-    private vendaService: VendaService,
+    //private vendaService: VendaService,
     private router: Router
   ) { }
 
   ngOnInit() {
     this.carregarProduto();
-    this.carregarCarrinho();
+    //this.carregarCarrinho();
   }
 
   ngOnDestroy(): void {
@@ -45,32 +45,32 @@ export class DetalheProdutoComponent implements OnInit, OnDestroy {
     }));
   }
 
-  carregarCarrinho() {
-    this.vendaService.pegarListaProdutoVenda().subscribe(listaProduto => {
-      if(!listaProduto){
-        return;
-      }
+  // carregarCarrinho() {
+  //   this.vendaService.pegarListaProdutoVenda().subscribe(listaProduto => {
+  //     if(!listaProduto){
+  //       return;
+  //     }
     
-      this.listaDeProdutos = listaProduto;
-    });
-  }
+  //     this.listaDeProdutos = listaProduto;
+  //   });
+  // }
 
-  adicionarItem(): void {
-    this.vendaService.gravarProdutoVenda(this.produto);
-    this.carregarCarrinho();
-  }
+  // adicionarItem(): void {
+  //   this.vendaService.gravarProdutoVenda(this.produto);
+  //   this.carregarCarrinho();
+  // }
 
-  removerItem(item: ProdutosCarinho): void {
-    this.vendaService.removerProduto(item);
-    this.carregarCarrinho();
-  }
+  // removerItem(item: ProdutosCarinho): void {
+  //   this.vendaService.removerProduto(item);
+  //   this.carregarCarrinho();
+  // }
 
-  reduzirItem(item: ProdutosCarinho): void {
-    this.vendaService.removeItemCompra(item);
-    this.carregarCarrinho();
-  }
+  // reduzirItem(item: ProdutosCarinho): void {
+  //   this.vendaService.removeItemCompra(item);
+  //   this.carregarCarrinho();
+  // }
 
-  comprar() {
-    this.router.navigate(['/compra']);
-  }
+  // comprar() {
+  //   this.router.navigate(['/compra']);
+  // }
 }

@@ -6,8 +6,11 @@ import { HttpClientModule } from '@angular/common/http';
 import { NavBarComponent } from './components/nav-bar/nav-bar.component';
 import { CartaoComponent } from './components/cartao/cartao.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { NgxPaymentCardModule } from 'ngx-payment-card';
 import { CpfValidatorDirective } from './diretivas/cpf-validator.directive';
+import { MascaraCpfDirective } from './diretivas/mascara-cpf.directive';
+import { EspecialCharPreventDirective } from './diretivas/especial-char-prevent.directive';
+import { MaskDateDirective } from './diretivas/mask-date.directive';
+import { ResumoCompraComponent } from './components/resumo-compra/resumo-compra.component';
 
 @NgModule({
   declarations: [
@@ -15,7 +18,11 @@ import { CpfValidatorDirective } from './diretivas/cpf-validator.directive';
     MoedaBrlPipe,
     NavBarComponent,
     CartaoComponent,
-    CpfValidatorDirective
+    CpfValidatorDirective,
+    MascaraCpfDirective,
+    EspecialCharPreventDirective,
+    MaskDateDirective,
+    ResumoCompraComponent
   ],
   imports: [
     CommonModule,
@@ -28,7 +35,11 @@ import { CpfValidatorDirective } from './diretivas/cpf-validator.directive';
     NavBarComponent,
     MoedaBrlPipe,
     CartaoComponent,
-    CpfValidatorDirective
+    CpfValidatorDirective,
+    MascaraCpfDirective,
+    EspecialCharPreventDirective,
+    MaskDateDirective,
+    ResumoCompraComponent
   ]
 })
 export class SharedModule { }
