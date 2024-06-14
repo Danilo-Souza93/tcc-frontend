@@ -106,3 +106,25 @@
     border-radius: 5px;
     padding-left: 5px;
 }
+
+.btn {
+    border: none;
+    &:hover {
+        cursor: pointer;
+    }
+
+    &-busca {
+        width: 80%;
+    }
+}
+
+.btn-proximo {
+    border: none;
+    border-radius: 20px;
+    color: white;
+    background-color: rgba(252, 195, 2);
+
+    &.disabled {
+        background-color: rgba(252, 195, 2, 0.6);
+    }
+}

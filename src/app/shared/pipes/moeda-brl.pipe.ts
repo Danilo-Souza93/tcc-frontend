@@ -6,17 +6,8 @@ import { Pipe, PipeTransform } from '@angular/core';
 })
 export class MoedaBrlPipe implements PipeTransform {
 
-  transform(value: number | string, ...args: unknown[]): string {
-    if(value == null) {
-      return '';
-    }
-
-    let numericValue = typeof value === 'string' ? parseFloat(value) : value;
-
-    return numericValue.toLocaleString('pt-BR', {
-      style: 'currency',
-      currency: 'BRL'
-    });
+  transform(value: number, ...args: unknown[]): string {
+    return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(value);
   }
 
 }

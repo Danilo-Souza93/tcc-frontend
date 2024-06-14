@@ -14,41 +14,31 @@ export class ResumoCompraComponent implements OnInit {
 
   listaDeProdutos$: Observable<ProdutosCarinho[]>;
   @Input() produto = {} as Produto;
+  @Input() showBtn: boolean = true;
+  valorTotal: number = 0;
 
   constructor(private vendaService: VendaService, private router: Router) {
     this.listaDeProdutos$ = this.vendaService.pegarListaProdutoVenda();
   }
 
   ngOnInit() {
-    
+    this.valorTotal = this.vendaService.venda.valorTotal;
   }
-
 
   adicionarItem(): void {
     this.vendaService.gravarProdutoVenda(this.produto);
-    //this.carregarCarrinho();
+    this.valorTotal = this.vendaService.venda.valorTotal;
   }
 
   removerItem(item: ProdutosCarinho): void {
     this.vendaService.removerProduto(item);
-    //this.carregarCarrinho();
+    this.valorTotal = this.vendaService.venda.valorTotal;
   }
 
   reduzirItem(item: ProdutosCarinho): void {
     this.vendaService.removeItemCompra(item);
-    //this.carregarCarrinho();
+    this.valorTotal = this.vendaService.venda.valorTotal;
   }
-
-
-  // carregarCarrinho() {
-  //   this.vendaService.pegarListaProdutoVenda().subscribe(listaProduto => {
-  //     if(!listaProduto){
-  //       return;
-  //     }
-    
-  //     this.listaDeProdutos = listaProduto;
-  //   });
-  // }
 
   comprar() {
     this.router.navigate(['/compra']);

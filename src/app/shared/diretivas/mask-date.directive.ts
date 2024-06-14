@@ -12,12 +12,17 @@ export class MaskDateDirective {
     const input = this.el.nativeElement as HTMLInputElement;
     let value = input.value.replace(/\D/g, '');
 
-    if(value.length > 2) {
-      value = value.substring(0, 2) + '/' + value.substring(2, 6);
-    }
-
-    if (value.length > 7) {
-      value = value.substring(0, 7);
+    if (value.length <= 4) { // Format as mm/yyyy
+      if (value.length > 2) {
+        value = value.substring(0, 2) + '/' + value.substring(2, 4);
+      }
+    } else if (value.length <= 8) { // Format as dd/mm/yyyy
+      if (value.length > 2) {
+        value = value.substring(0, 2) + '/' + value.substring(2, 4);
+      }
+      if (value.length > 4) {
+        value = value.substring(0, 5) + '/' + value.substring(4, 8);
+      }
     }
 
     input.value = value;

@@ -18,16 +18,16 @@ export class DetalheProdutoComponent implements OnInit, OnDestroy {
 
   listaDeProdutos = new Array<ProdutosCarinho>();
   produto = {} as Produto;
+  produtoEdit = {} as Produto;
+  isEdit = false;
 
   constructor(
     private produtoService: ProdutoService,
-    //private vendaService: VendaService,
     private router: Router
   ) { }
 
   ngOnInit() {
     this.carregarProduto();
-    //this.carregarCarrinho();
   }
 
   ngOnDestroy(): void {
@@ -42,35 +42,42 @@ export class DetalheProdutoComponent implements OnInit, OnDestroy {
           return;
         }
         this.produto = res;
+        this.produtoEdit = {...res};
     }));
   }
 
-  // carregarCarrinho() {
-  //   this.vendaService.pegarListaProdutoVenda().subscribe(listaProduto => {
-  //     if(!listaProduto){
-  //       return;
-  //     }
-    
-  //     this.listaDeProdutos = listaProduto;
-  //   });
-  // }
+  toogleEdit() {
+    this.isEdit = !this.isEdit;
+  }
 
-  // adicionarItem(): void {
-  //   this.vendaService.gravarProdutoVenda(this.produto);
-  //   this.carregarCarrinho();
-  // }
+  cancelarProduto() {
+    this.produto = this.produtoEdit;
+    this.isEdit = false;
+  }
 
-  // removerItem(item: ProdutosCarinho): void {
-  //   this.vendaService.removerProduto(item);
-  //   this.carregarCarrinho();
-  // }
+  editarProduto() {
+    console.log(this.produto);
+    this.produtoService.putProduto(this.produto).subscribe({
+      next: (res: Produto) => {
+        this.produto = res;
+        this.produtoEdit = {...res};
+        this.isEdit = false;
+      },
+      error: (err: any) => {
+        alert(err.message);
+      }
+    })
+  }
 
-  // reduzirItem(item: ProdutosCarinho): void {
-  //   this.vendaService.removeItemCompra(item);
-  //   this.carregarCarrinho();
-  // }
-
-  // comprar() {
-  //   this.router.navigate(['/compra']);
-  // }
+  deleteProduto() {
+    this.produtoService.deleteProduto(this.produto.id).subscribe({
+      next: (res: any) =>{
+        alert(res.message);
+        this.router.navigate(["/home"]);
+      },
+      error: (err: any) => {
+        alert(err.message);
+      }
+    })
+  }
 }

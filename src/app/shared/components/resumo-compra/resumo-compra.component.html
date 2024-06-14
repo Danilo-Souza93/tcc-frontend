@@ -2,10 +2,10 @@
   <div class="w-100 pb-2 linha">
     <span class="fw-bold">Resumo da Compra</span>
   </div>
-  <div class="min-h" *ngIf="listaDeProdutos$ | async as listaDeProdutos">
+  <div class="d-flex flex-column" *ngIf="(listaDeProdutos$ | async)?.length; else empty">
     <div
       class="d-flex justify-content-between aling-items-center flex-wrap mt-2"
-      *ngFor="let item of listaDeProdutos"
+      *ngFor="let item of listaDeProdutos$ | async"
     >
       <div class="d-flex flex-column ps-2">
         <div class="d-flex flex-wrap">
@@ -18,16 +18,29 @@
           <span class="fw-bold me-2">Quantidade</span><a>{{ item.quantidade }}</a>
         </div>
       </div>
-      <div class="d-flex flex-column">
+      <div class="d-flex align-items-center flex-wrap">
         <button class="btn btn-remover" (click)="reduzirItem(item)"> - </button>
         <button class="btn btn-apagar" (click)="removerItem(item)"><img src="./../../assets/imgs/trash.svg"/></button>
       </div>
     </div>
+    <div class="d-flex mt-3" *ngIf="valorTotal !== 0">
+      <label for="total"><h5 class="m-0">Total:</h5></label>
+      <input class="border border-0 bg-transparent ms-2" id="total" [value]="valorTotal | moedaBRL"/>
+    </div>
   </div>
-  <div>
+
+  <div *ngIf="showBtn">
     <button class="my-2 btn btn-adicionar w-100" (click)="adicionarItem()">
       Adicionar Carrinho
     </button>
     <button class="my-2 btn btn-comprar w-100" (click)="comprar()">Comprar</button>
   </div>
 </div>
+
+<ng-template #empty>
+  <div class="w-100 pt-5 d-flex flex-column align-items-center justify-content-between">
+    <h5>A lista de produtos está vazia.</h5>
+    <img class="w-100 mb-2 ms-4" src="./../../../../assets/imgs/crying_.png" />
+  </div>
+</ng-template>
+

@@ -1,318 +1,383 @@
-<div class="stepper-wrapper">
-  <div
-    class="stepper-item"
-    [ngClass]="currentStep > 1 ? 'completed' : 'active'"
-  >
-    <div class="step-counter">1</div>
-    <div class="step-name">Dados Pessoais</div>
-  </div>
-  <div
-    class="stepper-item"
-    [ngClass]="currentStep > 2 ? 'completed' : 'active'"
-  >
-    <div class="step-counter">2</div>
-    <div class="step-name">Endereço</div>
-  </div>
-  <div
-    class="stepper-item"
-    [ngClass]="currentStep > 3 ? 'completed' : 'active'"
-  >
-    <div class="step-counter">3</div>
-    <div class="step-name">Dados de Pagamento</div>
-  </div>
-</div>
-
-<form [formGroup]="dadosForm" >
-  <div
-    class="espaco-lateral d-flex justify-content-center align-items-center mt-5 w-100"
-    *ngIf="currentStep == 1"
-  >
-    <div formGroupName="dadosPessoais" class="d-flex flex-column">
-      <h1 class="mb-4">Dados Pessoais</h1>
-  
-      <div class="mb-4">
-        <label class="ps-2" for="nome">
-          <h5>Nome</h5>
-        </label>
-        <input
-          id="nome"
-          class="ps-2 form-control w-100 input"
-          [class.error]="
-            !dadosForm.get('dadosPessoais.nome')?.valid && 
-            (dadosForm.get('dadosPessoais.nome')?.touched || dadosForm.get('dadosPessoais.nome')?.dirty)"
-          formControlName="nome"
-          placeholder="Primeiro Nome"
-          maxlength="30"
-        />
-        <div class="d-flex flex-column error" 
-          *ngIf="
-          !dadosForm.get('dadosPessoais.nome')?.valid && 
-          (dadosForm.get('dadosPessoais.nome')?.touched || dadosForm.get('dadosPessoais.nome')?.dirty)"
-        >
-        <span>*Nome invalido</span>
-        </div>
-      </div>
-  
-      <div class="mb-4">
-        <label class="ps-2" for="sobrenome">
-          <h5>Sobrenome</h5>
-        </label>
-        <input
-          id="sobrenome"
-          class="ps-2 form-control w-100 input"
-          [class.error]=" 
-            !dadosForm.get('dadosPessoais.sobrenome')?.valid && 
-            (dadosForm.get('dadosPessoais.sobrenome')?.touched || dadosForm.get('dadosPessoais.sobrenome')?.dirty)"
-          formControlName="sobrenome"
-          placeholder="Sobre Nome"
-          maxlength="30"
-        />
-        <div class="d-flex flex-column error" 
-          *ngIf="
-          !dadosForm.get('dadosPessoais.sobrenome')?.valid && 
-          (dadosForm.get('dadosPessoais.sobrenome')?.touched || dadosForm.get('dadosPessoais.sobrenome')?.dirty)"
-        >
-          <span>*Sobrenome invalido</span>
-        </div>
-      </div>
-  
-      <div class="mb-4">
-        <label class="ps-2" for="cpf">
-          <h5>CPF</h5>
-        </label>
-        <input
-          id="cpf"
-          class="ps-2 form-control w-100 input"
-          [class.error]="
-            !dadosForm.get('dadosPessoais.cpf')?.valid && 
-            (dadosForm.get('dadosPessoais.cpf')?.touched || dadosForm.get('dadosPessoais.cpf')?.dirty)"
-          formControlName="cpf"
-          placeholder="CPF"
-          maxlength="14"
-          MascaraCpf
-          EspecialCharPreventDirective
-        />
-        <div class="d-flex flex-column error" 
-          *ngIf="
-          !dadosForm.get('dadosPessoais.cpf')?.valid && 
-          (dadosForm.get('dadosPessoais.cpf')?.touched || dadosForm.get('dadosPessoais.cpf')?.dirty)"
-        >
-          <span>*CPF Invalido</span>
-        </div>
-      </div>
-      
-      <div class="mb-4">
-        <label class="ps-2" for="email">
-          <h5>E-mail</h5>
-        </label>
-        <input
-          id="email"
-          class="ps-2 form-control w-100 input"
-          [class.error]="
-            !dadosForm.get('dadosPessoais.email')?.valid && 
-            (dadosForm.get('dadosPessoais.email')?.touched || dadosForm.get('dadosPessoais.email')?.dirty)"
-          formControlName="email"
-          placeholder="email@example.com"
-          maxlength="30"
-        />
-        <div class="d-flex flex-column error" 
-          *ngIf="
-          !dadosForm.get('dadosPessoais.email')?.valid && 
-          (dadosForm.get('dadosPessoais.email')?.touched || dadosForm.get('dadosPessoais.email')?.dirty)"
-        >
-          <span>*E-mail Invalido</span>
-        </div>
-      </div>
-
-      <button 
-        class="btn-proximo" 
-        [disabled]="!dadosForm.get('dadosPessoais')?.valid"
-        [class.disabled]="!dadosForm.get('dadosPessoais')?.valid"
-        (click)="nextStep()"
-      >
-        Próximo
-      </button>
+<div *ngIf="produtoCarrinho.length > 0; else empty">
+  <div class="stepper-wrapper">
+    <div
+      class="stepper-item"
+      [ngClass]="currentStep > 1 ? 'completed' : 'active'"
+    >
+      <div class="step-counter">1</div>
+      <div class="step-name">Dados Pessoais</div>
+    </div>
+    <div
+      class="stepper-item"
+      [ngClass]="currentStep > 2 ? 'completed' : 'active'"
+    >
+      <div class="step-counter">2</div>
+      <div class="step-name">Endereço</div>
+    </div>
+    <div
+      class="stepper-item"
+      [ngClass]="currentStep > 3 ? 'completed' : 'active'"
+    >
+      <div class="step-counter">3</div>
+      <div class="step-name">Dados de Pagamento</div>
     </div>
   </div>
   
-  <div
-    class="espaco-lateral d-flex justify-content-center align-items-center mt-5 w-100"
-    *ngIf="currentStep == 2"
-  >
-    <div formGroupName="endereco" class="d-flex flex-column w-50">
-      <h1 class="mb-4 text-center">Endereço de Entrega</h1>
-      <div class="mb-4">
-        <label class="ps-2" for="cep">
-          <h5>CEP</h5>
-        </label>
-        <div class="d-flex justify-content-between align-items-center">
-          <input
-            id="cep"
-            class="ps-2 form-control w-70 input"
-            [class.error]="
-              !dadosForm.get('endereco.cep')?.valid && 
-              (dadosForm.get('endereco.cep')?.touched ||  dadosForm.get('endereco.cep')?.dirty)"
-            formControlName="cep"
-            placeholder="CEP"
-            maxlength="8"
-            EspecialCharPrevent
-          />
-          <div class="w-20">
-            <button (click)="buscarCep()"
-              class="btn btn-busca"
-              [disabled]="
-              !dadosForm.get('endereco.cep')?.valid">
-              <img class="w-100" src="./../../assets/imgs/lupa.png">
-            </button>
-          </div>
-        </div>
-        <div class="d-flex flex-column error" 
-          *ngIf="
-            !dadosForm.get('endereco.cep')?.valid&& 
-            (dadosForm.get('endereco.cep')?.touched || dadosForm.get('endereco.cep')?.dirty)">
-          <span>*CEP invalido</span>
-        </div>
-      </div>
+  <form [formGroup]="dadosForm" >
+    <div
+      class="espaco-lateral d-flex justify-content-center align-items-center mt-5 w-100"
+      *ngIf="currentStep == 1"
+    >
+      <div formGroupName="dadosPessoais" class="d-flex flex-column">
+        <h1 class="mb-4">Dados Pessoais</h1>
   
-      <div class="d-flex justify-content-between">
-        <div class="mb-4 w-70">
-          <label class="ps-2" for="rua">
-            <h5>Rua</h5>
+        <div class="mb-4">
+          <label class="ps-2" for="nome">
+            <h5>Nome</h5>
           </label>
           <input
-            id="rua"
+            id="nome"
             class="ps-2 form-control w-100 input"
             [class.error]="
-              !dadosForm.get('endereco.rua')?.valid && 
-              (dadosForm.get('endereco.rua')?.touched ||  dadosForm.get('endereco.rua')?.dirty)"
-            formControlName="rua"
-            placeholder="Logradouro"
+              !dadosForm.get('dadosPessoais.nome')?.valid &&
+              (dadosForm.get('dadosPessoais.nome')?.touched || dadosForm.get('dadosPessoais.nome')?.dirty)"
+            formControlName="nome"
+            placeholder="Primeiro Nome"
+            maxlength="30"
+          />
+          <div class="d-flex flex-column error"
+            *ngIf="
+            !dadosForm.get('dadosPessoais.nome')?.valid &&
+            (dadosForm.get('dadosPessoais.nome')?.touched || dadosForm.get('dadosPessoais.nome')?.dirty)"
+          >
+          <span>*Nome invalido</span>
+          </div>
+        </div>
+  
+        <div class="mb-4">
+          <label class="ps-2" for="sobrenome">
+            <h5>Sobrenome</h5>
+          </label>
+          <input
+            id="sobrenome"
+            class="ps-2 form-control w-100 input"
+            [class.error]="
+              !dadosForm.get('dadosPessoais.sobrenome')?.valid &&
+              (dadosForm.get('dadosPessoais.sobrenome')?.touched || dadosForm.get('dadosPessoais.sobrenome')?.dirty)"
+            formControlName="sobrenome"
+            placeholder="Sobre Nome"
+            maxlength="30"
+          />
+          <div class="d-flex flex-column error"
+            *ngIf="
+            !dadosForm.get('dadosPessoais.sobrenome')?.valid &&
+            (dadosForm.get('dadosPessoais.sobrenome')?.touched || dadosForm.get('dadosPessoais.sobrenome')?.dirty)"
+          >
+            <span>*Sobrenome invalido</span>
+          </div>
+        </div>
+  
+        <div class="mb-4">
+          <label class="ps-2" for="cpf">
+            <h5>CPF</h5>
+          </label>
+          <input
+            id="cpf"
+            class="ps-2 form-control w-100 input"
+            [class.error]="
+              !dadosForm.get('dadosPessoais.cpf')?.valid &&
+              (dadosForm.get('dadosPessoais.cpf')?.touched || dadosForm.get('dadosPessoais.cpf')?.dirty)"
+            formControlName="cpf"
+            placeholder="CPF"
+            maxlength="14"
+            MascaraCpf
+            EspecialCharPreventDirective
+          />
+          <div class="d-flex flex-column error"
+            *ngIf="
+            !dadosForm.get('dadosPessoais.cpf')?.valid &&
+            (dadosForm.get('dadosPessoais.cpf')?.touched || dadosForm.get('dadosPessoais.cpf')?.dirty)"
+          >
+            <span>*CPF Invalido</span>
+          </div>
+        </div>
+  
+        <div class="mb-4">
+          <label class="ps-2" for="email">
+            <h5>E-mail</h5>
+          </label>
+          <input
+            id="email"
+            class="ps-2 form-control w-100 input"
+            [class.error]="
+              !dadosForm.get('dadosPessoais.email')?.valid &&
+              (dadosForm.get('dadosPessoais.email')?.touched || dadosForm.get('dadosPessoais.email')?.dirty)"
+            formControlName="email"
+            placeholder="email@example.com"
+            maxlength="100"
+          />
+          <div class="d-flex flex-column error"
+            *ngIf="
+            !dadosForm.get('dadosPessoais.email')?.valid &&
+            (dadosForm.get('dadosPessoais.email')?.touched || dadosForm.get('dadosPessoais.email')?.dirty)"
+          >
+            <span>*E-mail Invalido</span>
+          </div>
+        </div>
+  
+        <button
+          class="btn-proximo"
+          [disabled]="!dadosForm.get('dadosPessoais')?.valid"
+          [class.disabled]="!dadosForm.get('dadosPessoais')?.valid"
+          (click)="nextStep()"
+        >
+          Próximo
+        </button>
+      </div>
+    </div>
+  
+    <div
+      class="espaco-lateral d-flex justify-content-center align-items-center my-5 w-100"
+      *ngIf="currentStep == 2"
+    >
+      <div formGroupName="endereco" class="d-flex flex-column w-50">
+        <h1 class="mb-4 text-center">Endereço de Entrega</h1>
+        <div class="mb-4">
+          <label class="ps-2" for="cep">
+            <h5>CEP</h5>
+          </label>
+          <div class="d-flex justify-content-between align-items-center">
+            <input
+              id="cep"
+              class="ps-2 form-control w-70 input"
+              [class.error]="
+                !dadosForm.get('endereco.cep')?.valid &&
+                (dadosForm.get('endereco.cep')?.touched ||  dadosForm.get('endereco.cep')?.dirty)"
+              formControlName="cep"
+              placeholder="CEP"
+              maxlength="8"
+              EspecialCharPrevent
+            />
+            <div class="w-20">
+              <button (click)="buscarCep()"
+                class="btn btn-busca"
+                [disabled]="
+                !dadosForm.get('endereco.cep')?.valid">
+                <img class="w-100" src="./../../assets/imgs/lupa.png">
+              </button>
+            </div>
+          </div>
+          <div class="d-flex flex-column error"
+            *ngIf="
+              !dadosForm.get('endereco.cep')?.valid&&
+              (dadosForm.get('endereco.cep')?.touched || dadosForm.get('endereco.cep')?.dirty)">
+            <span>*CEP invalido</span>
+          </div>
+        </div>
+  
+        <div class="d-flex justify-content-between">
+          <div class="mb-4 w-70">
+            <label class="ps-2" for="rua">
+              <h5>Rua</h5>
+            </label>
+            <input
+              id="rua"
+              class="ps-2 form-control w-100 input"
+              [class.error]="
+                !dadosForm.get('endereco.rua')?.valid &&
+                (dadosForm.get('endereco.rua')?.touched ||  dadosForm.get('endereco.rua')?.dirty)"
+              formControlName="rua"
+              placeholder="Logradouro"
+              maxlength="200"
+              EspecialCharPrevent
+            />
+            <div class="d-flex flex-column error"
+              *ngIf="
+                !dadosForm.get('endereco.rua')?.valid &&
+                (dadosForm.get('endereco.rua')?.touched ||  dadosForm.get('endereco.rua')?.dirty)"
+            >
+              <span>*Nome da rua é necessario</span>
+            </div>
+          </div>
+          <div class="w-20 mb-4">
+            <label class="ps-2" for="numero">
+              <h5>Número</h5>
+            </label>
+            <input
+              id="numero"
+              class="w-100 form-control ps-2 input"
+              [class.error]="
+                !dadosForm.get('endereco.numero')?.valid && dadosForm.get('endereco.numero')?.value > 0 &&
+                (dadosForm.get('endereco.numero')?.touched ||  dadosForm.get('endereco.numero')?.dirty)"
+              formControlName="numero"
+              placeholder="Numero"
+              maxlength="10"
+              EspecialCharPrevent
+            />
+            <div class="d-flex flex-column error"
+              *ngIf="
+              !dadosForm.get('endereco.numero')?.valid &&
+              (dadosForm.get('endereco.numero')?.touched ||  dadosForm.get('endereco.numero')?.dirty)"
+            >
+              <span>*Numero é necessario</span>
+            </div>
+          </div>
+        </div>
+  
+        <div class="mb-4">
+          <label class="ps-2" for="bairro">
+            <h5>Bairro</h5>
+          </label>
+          <input
+            id="bairro"
+            class="ps-2 form-control w-100 input"
+            [class.error]="
+              !dadosForm.get('endereco.bairro')?.valid &&
+              (dadosForm.get('endereco.bairro')?.touched || dadosForm.get('endereco.bairro')?.dirty)"
+            formControlName="bairro"
+            placeholder="Bairro"
             maxlength="200"
             EspecialCharPrevent
           />
-          <div class="d-flex flex-column error" 
+          <div class="d-flex flex-column error"
             *ngIf="
-              !dadosForm.get('endereco.rua')?.valid && 
-              (dadosForm.get('endereco.rua')?.touched ||  dadosForm.get('endereco.rua')?.dirty)"
-          >
-            <span>*Nome da rua é necessario</span>
-          </div>
-        </div>
-        <div class="w-20 mb-4">
-          <label class="ps-2" for="numero">
-            <h5>Número</h5>
-          </label>
-          <input
-            id="numero"
-            class="w-100 form-control ps-2 input"
-            [class.error]="
-              !dadosForm.get('endereco.numero')?.valid && dadosForm.get('endereco.numero')?.value > 0 &&
-              (dadosForm.get('endereco.numero')?.touched ||  dadosForm.get('endereco.numero')?.dirty)"
-            formControlName="numero"
-            placeholder="Numero"
-            maxlength="10"
-            EspecialCharPrevent
-          />
-          <div class="d-flex flex-column error" 
-            *ngIf="
-            !dadosForm.get('endereco.numero')?.valid &&
-            (dadosForm.get('endereco.numero')?.touched ||  dadosForm.get('endereco.numero')?.dirty)"
-          >
-            <span>*Numero é necessario</span>
-          </div>
-        </div>
-      </div>
-  
-      <div class="mb-4">
-        <label class="ps-2" for="bairro">
-          <h5>Bairro</h5>
-        </label>
-        <input
-          id="bairro"
-          class="ps-2 form-control w-100 input"
-          [class.error]="
             !dadosForm.get('endereco.bairro')?.valid &&
             (dadosForm.get('endereco.bairro')?.touched || dadosForm.get('endereco.bairro')?.dirty)"
-          formControlName="bairro"
-          placeholder="Bairro"
-          maxlength="200"
-          EspecialCharPrevent
-        />
-        <div class="d-flex flex-column error" 
-          *ngIf="
-          !dadosForm.get('endereco.bairro')?.valid && 
-          (dadosForm.get('endereco.bairro')?.touched || dadosForm.get('endereco.bairro')?.dirty)"
-        >
-          <span>*Bairro invalido</span>
+          >
+            <span>*Bairro invalido</span>
+          </div>
         </div>
-      </div>
   
-      <div class="d-flex justify-content-between">
-        <div class="mb-4 w-70">
-          <label class="ps-2" for="cidade">
-            <h5>Cidade</h5>
-          </label>
-          <input
-            id="cidade"
-            class="ps-2 form-control w-100 input"
-            [class.error]="
+        <div class="d-flex justify-content-between">
+          <div class="mb-4 w-70">
+            <label class="ps-2" for="cidade">
+              <h5>Cidade</h5>
+            </label>
+            <input
+              id="cidade"
+              class="ps-2 form-control w-100 input"
+              [class.error]="
+                !dadosForm.get('endereco.cidade')?.valid &&
+                (dadosForm.get('endereco.cidade')?.touched || dadosForm.get('endereco.cidade')?.dirty)"
+              formControlName="cidade"
+              placeholder="Cidade"
+              maxlength="200"
+            />
+            <div class="d-flex flex-column error"
+              *ngIf="!dadosForm.get('endereco.cidade')?.valid &&
+                (dadosForm.get('endereco.cidade')?.touched || dadosForm.get('endereco.cidade')?.dirty)">
+              <span>*Cidade é necessário</span>
+            </div>
+          </div>
+          <div class="mb-4 w-20">
+            <label class="ps-2" for="estado">
+              <h5>Estado</h5>
+            </label>
+            <select
+              id="estado"
+              class="input w-100"
+              [class.error]="
+                !dadosForm.get('endereco.estado')?.valid &&
+                (dadosForm.get('endereco.estado')?.touched || dadosForm.get('endereco.estado')?.dirty)"
+              formControlName="estado"
+            >
+              <option value="" disabled selected>Selecione</option>
+              <option *ngFor="let estado of estadosList" [value]="estado">{{estado}}</option>
+            </select>
+            <div class="d-flex flex-column error"
+              *ngIf="
               !dadosForm.get('endereco.cidade')?.valid &&
-              (dadosForm.get('endereco.cidade')?.touched || dadosForm.get('endereco.cidade')?.dirty)"
-            formControlName="cidade"
-            placeholder="Cidade"
-            maxlength="200"
-          />
-          <div class="d-flex flex-column error" 
-            *ngIf="!dadosForm.get('endereco.cidade')?.valid &&
-              (dadosForm.get('endereco.cidade')?.touched || dadosForm.get('endereco.cidade')?.dirty)">
-            <span>*Cidade é necessário</span>
-          </div>
-        </div>
-        <div class="mb-4 w-20">
-          <label class="ps-2" for="estado">
-            <h5>Estado</h5>
-          </label>
-          <select 
-            id="estado" 
-            class="input" 
-            [class.error]="
-              !dadosForm.get('endereco.estado')?.valid && 
               (dadosForm.get('endereco.estado')?.touched || dadosForm.get('endereco.estado')?.dirty)"
-            formControlName="estado"
-          >
-            <option value="" disabled selected>Selecione</option>
-            <option *ngFor="let estado of estadosList" [value]="estado">{{estado}}</option>
-          </select>
-          <div class="d-flex flex-column error" 
-            *ngIf="
-            !dadosForm.get('endereco.cidade')?.valid && 
-            (dadosForm.get('endereco.estado')?.touched || dadosForm.get('endereco.estado')?.dirty)"
-          >
-            <span>*Estado é necessario</span>
+            >
+              <span>*Estado é necessario</span>
+            </div>
           </div>
         </div>
-      </div>
   
-      <button class="btn-proximo" 
-        [disabled]="!dadosForm.get('endereco')?.valid" 
-        (click)="nextStep()"
-      >Próximo</button>
+        <button class="btn-proximo"
+          [disabled]="!dadosForm.get('endereco')?.valid"
+          (click)="nextStep()"
+        >Próximo</button>
+      </div>
+    </div>
+  </form>
+  
+  <div
+    class="espaco-lateral d-flex justify-content-center align-items-center mt-5 w-100"
+    *ngIf="currentStep == 3"
+  >
+    <div class="d-flex flex-column w-100">
+      <h1 class="mb-4 text-center">Dados de Pagamento</h1>
+      <app-cartao (nextStep)="nextStep()"></app-cartao>
     </div>
   </div>
-</form>
-
-<div
-  class="espaco-lateral d-flex justify-content-center align-items-center mt-5 w-100"
-  *ngIf="currentStep == 3"
->
-  <div class="d-flex flex-column w-100">
-    <h1 class="mb-4 text-center">Dados de Pagamento</h1>
-    <app-cartao (nextStep)="nextStep()"></app-cartao>
+  
+  <div class="espaco-lateral d-flex justify-content-center mt-5 w-100"
+      *ngIf="currentStep == 4">
+  
+      <resumo-compra [showBtn]="false" class="col-2"></resumo-compra>
+  
+      <div class="d-flex flex-column ps-5 col-6">
+        <div class="d-flex flex-column">
+          <h3 class="text-center">Dados Pessoais</h3>
+          <div class="mt-2">
+            <label for="nome-resumo" class="pe-2">Nome:</label>
+            <input id="nome-resumo" class="border border-0 bg-transparent" disabled readonly [value]="dadosForm.get('dadosPessoais.nome')?.value">
+          </div>
+          <div class="mt-2">
+            <label for="sobrenome-resumo" class="pe-2">Sobrenome:</label>
+            <input id="sobrenome-resumo" class="border border-0 bg-transparent" disabled readonly [value]="dadosForm.get('dadosPessoais.sobrenome')?.value">
+          </div>
+          <div class="mt-2">
+            <label for="cpf-resumo" class="pe-2">CPF:</label>
+            <input id="cpf-resumo" class="border border-0 bg-transparent" disabled readonly [value]="dadosForm.get('dadosPessoais.cpf')?.value">
+          </div>
+          <div class="mt-2">
+            <label for="email-resumo" class="pe-2">e-mail:</label>
+            <input id="email-resumo" class="border border-0 bg-transparent" disabled readonly [value]="dadosForm.get('dadosPessoais.email')?.value">
+          </div>
+        </div>
+        <div class="d-flex flex-column mt-3">
+          <h3 class="text-center">Endereço</h3>
+          <div class="mt-2">
+            <label for="rua-resumo" class="text-bold pe-2">Rua:</label>
+            <input id="rua-resumo" class="border border-0 bg-transparent" disabled readonly [value]="dadosForm.get('endereco.rua')?.value">
+          </div>
+          <div class="mt-2">
+            <label for="numero-resumo" class="pe-2">Número:</label>
+            <input id="numero-resumo" class="border border-0 bg-transparent" disabled readonly [value]="dadosForm.get('endereco.numero')?.value">
+          </div>
+          <div class="mt-2">
+            <label for="bairro-resumo" class="pe-2">Bairro:</label>
+            <input id="bairro-resumo" class="border border-0 bg-transparent" disabled readonly [value]="dadosForm.get('endereco.bairro')?.value">
+          </div>
+          <div class="mt-2">
+            <label for="cidade-resumo" class="pe-2">Cidade:</label>
+            <input id="cidade-resumo" class="border border-0 bg-transparent" disabled readonly [value]="dadosForm.get('endereco.cidade')?.value">
+          </div>
+          <div class="mt-2">
+            <label for="estado-resumo" class="pe-2">Estado:</label>
+            <input id="estado-resumo" class="border border-0 bg-transparent" disabled readonly [value]="dadosForm.get('endereco.estado')?.value">
+          </div>
+          <div class="mt-2">
+            <label for="cep-resumo" class="pe-2">cep:</label>
+            <input id="cep-resumo" class="border border-0 bg-transparent" disabled readonly [value]="dadosForm.get('endereco.cep')?.value">
+          </div>
+        </div>
+      </div>
+  
+      <div class="col-4 d-flex flex-column align-items-center">
+        <h3 class="text-center mb-4">Dados Pagamento</h3>
+        <app-cartao *ngIf="dadosPagamento" [showForm]="false" [dadosPagamento]="dadosPagamento" (nextStep)="nextStep()"></app-cartao>
+  
+        <button class="btn bg-success mt-5" (click)="finalizarCompra()">Finalizar Compra</button>
+      </div>
   </div>
 </div>
 
-<div class="espaco-lateral d-flex justify-content-center align-items-center mt-5 w-100"
-    *ngIf="currentStep == 4">
-    <h1 class="mb-4 text-center">Resumo da Compra</h1>
-    
-</div>
+<ng-template #empty>
+  <div class="w-100 espaco-lateral pt-5 d-flex flex-column align-items-center justify-content-center">
+    <h1>A lista de produtos está vazia.</h1>
+    <img class="w-30" src="./../../assets/imgs/crying_.png" />
+  </div>
+</ng-template>

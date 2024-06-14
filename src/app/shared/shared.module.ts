@@ -11,6 +11,7 @@ import { MascaraCpfDirective } from './diretivas/mascara-cpf.directive';
 import { EspecialCharPreventDirective } from './diretivas/especial-char-prevent.directive';
 import { MaskDateDirective } from './diretivas/mask-date.directive';
 import { ResumoCompraComponent } from './components/resumo-compra/resumo-compra.component';
+import { RouterModule } from '@angular/router';
 
 @NgModule({
   declarations: [
@@ -29,6 +30,7 @@ import { ResumoCompraComponent } from './components/resumo-compra/resumo-compra.
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
+    RouterModule
   ],
   exports:[
     ApresentacaoProdutoComponent,

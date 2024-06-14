@@ -1,9 +1,11 @@
+import { Router } from '@angular/router';
+import { DadosPagamento } from './../shared/models/DadosPagamento';
 import { Endereco } from './../shared/models/Endereco';
 import { DadosPessoais } from './../shared/models/DadosPessoais';
 import { Subscription } from 'rxjs';
 import { ProdutosCarinho } from '../shared/models/ProdutosCarinho';
 import { VendaService } from './../shared/services/venda.service';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CepService } from '../shared/services/cep.service';
 import { ESTADOS } from '../shared/models/Estados';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -14,7 +16,7 @@ import { cpfValidator } from '../shared/diretivas/cpf-validator.directive';
   templateUrl: './compra.component.html',
   styleUrls: ['./compra.component.scss']
 })
-export class CompraComponent implements OnInit {
+export class CompraComponent implements OnInit, OnDestroy {
 
   currentStep = 1;
   estadosList = ESTADOS;
@@ -24,11 +26,14 @@ export class CompraComponent implements OnInit {
   produtoCarrinho = new Array<ProdutosCarinho>();
   dadosPessoais = {} as DadosPessoais;
   endereco = {} as Endereco;
+  dadosPagamento = {} as DadosPagamento;
+  imgSelecionada: string = '';
 
   constructor(
     private vendaService: VendaService, 
     private cepService: CepService, 
-    private fb: FormBuilder) { 
+    private fb: FormBuilder,
+    private router: Router) { 
 
       this.dadosPessoais = {
         cpf: '',
@@ -43,7 +48,7 @@ export class CompraComponent implements OnInit {
         bairro: '',
         cidade: '',
         estado: '',
-        cep: '',
+        cep: ''
       }
 
       this.dadosForm = this.fb.group({
@@ -93,14 +98,40 @@ export class CompraComponent implements OnInit {
         this.produtoCarrinho = res;
       })
     );
+
+    this.subscription.add(
+      this.vendaService.pegarDadosPessoais ().subscribe(res => {
+        if(res.cpf) {        
+          this.dadosPessoais = res;
+          this.dadosForm.get('dadosPessoais')?.setValue(this.dadosPessoais);
+        }
+      })
+    );
+
+    this.subscription.add(
+      this.vendaService.pegarEndereco().subscribe(res => {
+        if(res.cep){
+          this.endereco = res;
+          this.dadosForm.get('endereco')?.setValue(this.endereco);
+        }
+      })
+    );
+
+    this.currentStep = this.vendaService.step;
   }
 
-  nextStep() {
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
+  }
+
+  nextStep():void {
     if (this.currentStep <= 4) {
       switch(this.currentStep) {
         case 1: this.salvarDadosPessoais();
         break;
         case 2: this.salvarDadosEndereco();
+        break;
+        case 3: this.carregarPagamento();
         break;
         default: break;
       }
@@ -115,7 +146,7 @@ export class CompraComponent implements OnInit {
     }
   }
 
-  buscarCep(): void {
+  buscarCep():void {
     this.cepService.buscarCEP(this.dadosForm.get('endereco.cep')?.value).subscribe({
       next: (res: any) => { 
         this.dadosForm.get('endereco.rua')?.setValue(res.logradouro);
@@ -126,13 +157,39 @@ export class CompraComponent implements OnInit {
     });
   }
 
+  carregarPagamento():void {
+    this.subscription.add(
+      this.vendaService.pegarDadosPagamento().subscribe(res => {
+        this.dadosPagamento = res;       
+      })
+    );
+    this.vendaService.step = 4;
+  }
 
-  salvarDadosPessoais() {
+  salvarDadosPessoais():void {
     this.dadosPessoais = this.dadosForm.get('dadosPessoais')?.value;
+    this.vendaService.gravarDadosPessoais(this.dadosPessoais);
+    this.vendaService.step = 2;
   }
 
-  salvarDadosEndereco() {
+  salvarDadosEndereco():void {
     this.endereco = this.dadosForm.get('endereco')?.value;
+    this.vendaService.gravarEndereco(this.endereco);
+    this.vendaService.step = 3;
   }
 
+  finalizarCompra():void {
+    this.vendaService.criarVenda().subscribe({
+      next: (res: any) => {
+        console.log(res);
+        alert("VENDA CRIADA, Cédigo: "+res.vendaId);
+        this.router.navigate(['/home']);
+      },
+      error: (err: any) => {
+        console.log(err);
+        alert("ERRO AO CRIAR VENDA");
+      }
+    });
+    
+  }
 }

@@ -1,0 +1,87 @@
+<div class="d-flex flex-column espaco-lateral align-items-center my-5">
+  <h2>Buscar Venda</h2>
+  <div class="d-flex align-items-center justify-content-center w-100 mt-4">
+    <input class="input w-60" id="busca" [(ngModel)]="vendaId" placeholder="Insira o codigo de rastreio">
+    <button 
+      class="btn-lupa"
+      (click)="buscarVenda()"
+    >
+      <img class="w-100" src="./../../assets/imgs/lupa.png">
+    </button>
+  </div>
+
+  <div class="d-flex w-100" *ngIf="detalheVenda.venda">
+    <div class="p-2 d-flex flex-column border col-3 me-5">
+      <div class="w-100 pb-2 linha">
+        <span class="fw-bold">Resumo da Compra</span>
+        
+      </div>
+      
+      <div class="d-flex flex-column" *ngIf="detalheVenda.produtosList">
+        <div
+          class="d-flex justify-content-between aling-items-center flex-wrap mt-2"
+          *ngFor="let item of detalheVenda.produtosList"
+        >
+          <div class="d-flex flex-column ps-2">
+            <div class="d-flex flex-wrap">
+              <span class="fw-bold me-2">Nome:</span><a>{{ item.nome }}</a>
+            </div>
+            <div class="d-flex flex-wrap">
+              <span class="fw-bold me-2">Valor:</span><a>{{ item.valor | moedaBRL}}</a>
+            </div>
+            <div class="d-flex flex-wrap">
+              <span class="fw-bold me-2">Quantidade</span><a>{{""}}</a>
+            </div>
+          </div>
+        </div>
+        <div class="d-flex mt-3">
+          <label for="total"><h5 class="m-0">Total:</h5></label>
+          <input class="border border-0 bg-transparent ms-2" id="total" [value]="detalheVenda.venda.valorTotal | moedaBRL"/>
+        </div>
+      </div>
+    </div>
+
+    <div class="d-flex flex-column w-50">
+      <div class="d-flex flex-column">
+        <label for="status">Situação</label>
+        <input class="input" id="status" disabled readonly [value]="detalheVenda.venda.status">
+      </div>
+      <div class="d-flex flex-column">
+        <h4 class="text-center">Dados Pessoais</h4>
+        <label for="nome" class="mt-2"><h6>Nome:</h6> </label>
+        <input class="input" id="nome" disabled readonly [value]="detalheVenda.venda.dadosPessoais.nome">
+        <label for="sobrenome" class="mt-2"><h6>sobrenome:</h6> </label>
+        <input class="input" id="sobrenome" disabled readonly [value]="detalheVenda.venda.dadosPessoais.sobrenome">
+        <label for="cpf" class="mt-2"><h6>CPF:</h6> </label>
+        <input class="input" id="cpf" disabled readonly [value]="detalheVenda.venda.dadosPessoais.cpf">
+        <label for="email" class="mt-2"><h6>email:</h6> </label>
+        <input class="input" id="email" disabled readonly [value]="detalheVenda.venda.dadosPessoais.email">
+      </div>
+      <div class="d-flex flex-column">
+        <h4 class="text-center">Endereço Entrega</h4>
+        <label for="bairro" class="mt-2"><h6>Bairro:</h6> </label>
+        <input class="input" id="bairro" disabled readonly [value]="detalheVenda.venda.endereco.bairro">
+        <div class="d-flex justify-content-between mt-2">
+          <div class="d-flex flex-column col-8">
+            <label for="cidade"><h6>Cidade:</h6> </label>
+            <input class="input" id="cidade" disabled readonly [value]="detalheVenda.venda.endereco.cidade">
+          </div>
+          <div class="d-flex flex-column col-3">
+            <label for="estado"><h6>Estado:</h6> </label>
+            <input class="input" id="estado" disabled readonly [value]="detalheVenda.venda.endereco.estado">
+          </div>
+        </div>
+        <div  class="d-flex justify-content-between mt-2">
+          <div class="d-flex flex-column col-8">
+            <label for="rua"><h6>Rua:</h6> </label>
+            <input class="input" id="rua" disabled readonly [value]="detalheVenda.venda.endereco.rua">
+          </div>
+          <div class="d-flex flex-column col-3 mt-2">
+            <label for="numero"><h6>Numero:</h6></label>
+            <input class="input" id="numero" disabled readonly [value]="detalheVenda.venda.endereco.numero">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

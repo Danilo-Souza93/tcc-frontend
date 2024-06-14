@@ -1,11 +1,35 @@
 <div clas="app-base">
   <div class="navbar-config nav-color espaco-lateral">
-    <img 
-      src="./../.././../../assets/imgs/caneca.png" 
+    <img
+      src="./../.././../../assets/imgs/caneca.png"
       class="logo"
       (click)="goHomePage()"
     />
-    <input type="search" class="nav-input"/>
+    <div class="d-flex w-60 justify-content-end">
+      <div class="d-flex ">
+        <button
+          [routerLink]="['/buscar-venda']"
+          routerLinkActive="router-link-active"
+          class="nav-btn"
+        >
+          Rastrear Venda
+        </button>
+        <button
+          [routerLink]="['/add-produto']"
+          routerLinkActive="router-link-active"
+          class="nav-btn"
+        >
+          Adicionar Produto
+        </button>
+        <button
+          class="nav-btn ps-3"
+          [routerLink]="['/compra']"
+          routerLinkActive="router-link-active"
+        >
+          Compra
+        </button>
+      </div>
+      <input type="search" class="nav-input" />
+    </div>
   </div>
 </div>
-

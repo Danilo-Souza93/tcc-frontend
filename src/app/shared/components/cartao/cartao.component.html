@@ -2,18 +2,19 @@
   <div class="d-flex justify-content-between w-100">
     <div class="d-flex flex-column align-items-center">
       <input
-        *ngIf="!imgSelecionada" 
+        *ngIf="imgSelecionada == ''" 
         class="form-control"
         placeholder="Bandeira"
+        disabled
       />
-      <img *ngIf="imgSelecionada" class="img" src="{{imgSelecionada}}">
+      <img *ngIf="imgSelecionada !== ''" class="img" src="{{imgSelecionada}}">
     </div>
     <div class="d-flex align-items-center w-30">
       <input 
       class="form-control text-end"
       placeholder="Tipo"
       disabled
-      [value]="dadosPagamento.cartao.tipo"/>
+      [value]="paymentForm.get('cartao.tipo')?.value"/>
     </div>
   </div>
 
@@ -24,15 +25,15 @@
           class="form-control"
           placeholder="Número do Cartão"
           disabled
-          [value]="paymentForm.get('cardNumber')?.value"
+          [value]="paymentForm.get('cartao.numeroCartao')?.value"
         />
       </div>
       <div class="d-flex flex-column mb-3 w-40">
         <input
           class="form-control"
-          placeholder="CVV"
+          placeholder="codigoSeguranca"
           disabled
-          [value]="paymentForm.get('cvv')?.value"
+          [value]="paymentForm.get('cartao.codigoSeguranca')?.value"
         />
       </div>
     </div>
@@ -43,7 +44,7 @@
           class="form-control text-start"
           placeholder="Titular"
           disabled
-          [value]="paymentForm.get('cardHolder')?.value"
+          [value]="paymentForm.get('cartao.nomeCartao')?.value"
         />
       </div>
       <div class="w-40">
@@ -51,126 +52,133 @@
           class="form-control"
           placeholder="MM/AA"
           disabled
-          [value]="paymentForm.get('expirationDate')?.value"
+          [value]="paymentForm.get('cartao.dtValidade')?.value"
         />
       </div>
     </div>
   </div>
 </div>
 
-<div class="espaco-lateral d-flex flex-column justify-content-center align-items-center mt-5 p-5 w-100">
-  <div class="d-flex w-70 mb-4">
-    <div class="d-flex flex-column  me-5">
-      <label class="form-label">Bandeira</label>
-      <select class="select" [(ngModel)]="dadosPagamento.cartao.bandeira" (change)="selectImg($event)">
-        <option value="" disabled selected>Bandeira</option>
-        <option *ngFor="let bandeira of listaBandeira" [value]="bandeira.valor">{{bandeira.valor}}</option>
-      </select>
-    </div>
-    <div class="d-flex flex-column">
-      <label class="form-label">Tipo Pagamento</label>
-      <select class="select" [(ngModel)]="dadosPagamento.cartao.tipo">
-        <option value="" disabled selected>Tipo</option>
-        <option *ngFor="let tipo of tipoCartao" [value]="tipo">{{tipo}}</option>
-      </select>
-    </div>
-  </div>
+<div *ngIf="showForm" class="espaco-lateral d-flex flex-column justify-content-center align-items-center mt-5 p-5 w-100">
+  
 
   <form class="w-70" [formGroup]="paymentForm" (ngSubmit)="onSubmit()">
-    <div class="d-flex flex-column justify-content-center w-100 end-position">
-      <div class="d-flex justify-content-between">
-        <div class="d-flex flex-column mb-3 w-60">
-          <label for="cardNumber" class="form-label">Número do Cartão</label>
-          <input
-            id="cardNumber"
-            formControlName="cardNumber"
-            class="form-control"
-            [class.error]="paymentForm.get('cardNumber')?.invalid &&
-              (paymentForm.get('cardNumber')?.dirty || paymentForm.get('cardNumber')?.touched)"
-            placeholder="Digite o Número do Cartão"
-            maxlength="16"
-          />
-          <div
-            *ngIf="
-              paymentForm.get('cardNumber')?.invalid &&
-              (paymentForm.get('cardNumber')?.dirty ||
-              paymentForm.get('cardNumber')?.touched)"
-            class="text-danger">
-            <div *ngIf="paymentForm.get('cardNumber')?.errors?.['required']">
-              Número do cartão é obrigatório.
-            </div>
-            <div *ngIf="paymentForm.get('cardNumber')?.errors?.['pattern']">
-              Número do cartão deve conter 16 dígitos.
-            </div>
-          </div>
+    <div formGroupName="cartao">
+      <div class="d-flex w-70 mb-4">
+        <div class="d-flex flex-column me-5">
+          <label class="form-label">Bandeira</label>
+          <select class="select" formControlName="bandeira" (change)="selectImg($event)">
+            <option value="" disabled selected>Bandeira</option>
+            <option *ngFor="let bandeira of listaBandeira" [value]="bandeira.valor">{{bandeira.valor}}</option>
+          </select>
         </div>
-        <div class="d-flex flex-column mb-3 w-30">
-          <label for="cvv" class="form-label">CVV</label>
-          <input
-            id="cvv"
-            formControlName="cvv"
-            class="form-control"
-            [class.error]="paymentForm.get('cvv')?.invalid &&
-              (paymentForm.get('cvv')?.dirty || paymentForm.get('cvv')?.touched)"
-            placeholder="CVV"
-          />
-          <div
-            *ngIf="paymentForm.get('cvv')?.invalid &&
-              (paymentForm.get('cvv')?.dirty || paymentForm.get('cvv')?.touched)"
-            class="text-danger"
-          >
-            <div *ngIf="paymentForm.get('cvv')?.errors?.['required']">
-              CVV é obrigatório.
-            </div>
-            <div *ngIf="paymentForm.get('cvv')?.errors?.['pattern']">
-              CVV deve conter 3 dígitos.
-            </div>
-          </div>
+        <div class="d-flex flex-column">
+          <label class="form-label">Tipo Pagamento</label>
+          <select class="select" formControlName="tipo">
+            <option value="" disabled selected>Tipo</option>
+            <option *ngFor="let tipo of tipoCartao" [value]="tipo">{{tipo}}</option>
+          </select>
         </div>
       </div>
-
-      <div class="d-flex justify-content-between">
-        <div class="d-flex flex-column w-60">
-          <label for="cardHolder" class="form-label">Digite o Titular</label>
-          <input
-            id="cardHolder"
-            formControlName="cardHolder"
-            class="form-control text-start"
-            [class.error]="paymentForm.get('cardHolder')?.invalid &&
-            (paymentForm.get('cardHolder')?.dirty || paymentForm.get('cardHolder')?.touched)"
-            placeholder="Titular"
-          />
-          <div
-            *ngIf="paymentForm.get('cardHolder')?.invalid &&
-              (paymentForm.get('cardHolder')?.dirty || paymentForm.get('cardHolder')?.touched)"
-            class="text-danger"
-          >
-            <div *ngIf="paymentForm.get('cardHolder')?.errors?.['required']">
-              Nome do titular é obrigatório.
+      <div class="d-flex flex-column justify-content-center w-100 end-position">
+        <div class="d-flex justify-content-between">
+          <div class="d-flex flex-column mb-3 w-60">
+            <label for="numeroCartao" class="form-label">Número do Cartão</label>
+            <input
+              id="numeroCartao"
+              formControlName="numeroCartao"
+              class="form-control"
+              [class.error]="paymentForm.get('cartao.numeroCartao')?.invalid &&
+                (paymentForm.get('numeroCartao')?.dirty || paymentForm.get('numeroCartao')?.touched)"
+              placeholder="Digite o Número do Cartão"
+              maxlength="16"
+              EspecialCharPrevent
+            />
+            <div
+              *ngIf="
+                paymentForm.get('numeroCartao')?.invalid &&
+                (paymentForm.get('numeroCartao')?.dirty ||
+                paymentForm.get('numeroCartao')?.touched)"
+              class="text-danger">
+              <div *ngIf="paymentForm.get('cartao.numeroCartao')?.errors?.['required']">
+                Número do cartão é obrigatório.
+              </div>
+              <div *ngIf="paymentForm.get('cartao.numeroCartao')?.errors?.['pattern']">
+                Número do cartão deve conter 16 dígitos.
+              </div>
+            </div>
+          </div>
+          <div class="d-flex flex-column mb-3 w-30">
+            <label for="codigoSeguranca" class="form-label">codigoSeguranca</label>
+            <input
+              id="codigoSeguranca"
+              formControlName="codigoSeguranca"
+              class="form-control"
+              [class.error]="paymentForm.get('cartao.codigoSeguranca')?.invalid &&
+                (paymentForm.get('codigoSeguranca')?.dirty || paymentForm.get('codigoSeguranca')?.touched)"
+              placeholder="codigoSeguranca"
+              maxlength="3"
+              EspecialCharPrevent
+            />
+            <div
+              *ngIf="paymentForm.get('cartao.codigoSeguranca')?.invalid &&
+                (paymentForm.get('codigoSeguranca')?.dirty || paymentForm.get('codigoSeguranca')?.touched)"
+              class="text-danger"
+            >
+              <div *ngIf="paymentForm.get('cartao.codigoSeguranca')?.errors?.['required']">
+                codigoSeguranca é obrigatório.
+              </div>
+              <div *ngIf="paymentForm.get('cartao.codigoSeguranca')?.errors?.['pattern']">
+                codigoSeguranca deve conter 3 dígitos.
+              </div>
             </div>
           </div>
         </div>
-        <div class="w-30">
-          <label for="expirationDate" class="form-label">Data de Validade</label>
-          <input
-            id="expirationDate"
-            formControlName="expirationDate"
-            class="form-control"
-            [class.error]="paymentForm.get('expirationDate')?.invalid &&
-              (paymentForm.get('expirationDate')?.dirty || paymentForm.get('expirationDate')?.touched)"
-            placeholder="MM/AA"
-            MaskDate
-            EspecialCharPrevent
-          />
-          <div
-            *ngIf="paymentForm.get('expirationDate')?.invalid &&
-              (paymentForm.get('expirationDate')?.dirty || paymentForm.get('expirationDate')?.touched)"
-            class="text-danger">
-            <div *ngIf="paymentForm.get('expirationDate')?.errors?.['required']">
-              Data de validade é obrigatória.
+        <div class="d-flex justify-content-between">
+          <div class="d-flex flex-column w-60">
+            <label for="nomeCartao" class="form-label">Digite o Titular</label>
+            <input
+              id="nomeCartao"
+              formControlName="nomeCartao"
+              class="form-control text-start"
+              [class.error]="paymentForm.get('cartao.nomeCartao')?.invalid &&
+              (paymentForm.get('nomeCartao')?.dirty || paymentForm.get('nomeCartao')?.touched)"
+              placeholder="Titular"
+              
+            />
+            <div
+              *ngIf="paymentForm.get('cartao.nomeCartao')?.invalid &&
+                (paymentForm.get('nomeCartao')?.dirty || paymentForm.get('nomeCartao')?.touched)"
+              class="text-danger"
+            >
+              <div *ngIf="paymentForm.get('cartao.nomeCartao')?.errors?.['required']">
+                Nome do titular é obrigatório.
+              </div>
             </div>
-            <div *ngIf="paymentForm.get('expirationDate')?.errors?.['pattern']">
-              Data de validade deve estar no formato MM/AA.
+          </div>
+          <div class="w-30">
+            <label for="dtValidade" class="form-label">Data de Validade</label>
+            <input
+              id="dtValidade"
+              formControlName="dtValidade"
+              class="form-control"
+              [class.error]="paymentForm.get('cartao.dtValidade')?.invalid &&
+                (paymentForm.get('dtValidade')?.dirty || paymentForm.get('dtValidade')?.touched)"
+              placeholder="MM/AA"
+              maxlength="5"
+              MaskDate
+              EspecialCharPrevent
+            />
+            <div
+              *ngIf="paymentForm.get('cartao.dtValidade')?.invalid &&
+                (paymentForm.get('dtValidade')?.dirty || paymentForm.get('dtValidade')?.touched)"
+              class="text-danger">
+              <div *ngIf="paymentForm.get('cartao.dtValidade')?.errors?.['required']">
+                Data de validade é obrigatória.
+              </div>
+              <div *ngIf="paymentForm.get('cartao.dtValidade')?.errors?.['pattern']">
+                Data de validade deve estar no formato MM/AA.
+              </div>
             </div>
           </div>
         </div>
@@ -178,7 +186,7 @@
     </div>
     <button
       type="submit"
-      class="btn btn-primary mt-5"
+      class="btn btn-proximo mt-5"
       [disabled]="paymentForm.invalid">
       Proximo</button>
   </form>
