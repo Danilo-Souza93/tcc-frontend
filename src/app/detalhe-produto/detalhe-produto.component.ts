@@ -23,7 +23,8 @@ export class DetalheProdutoComponent implements OnInit, OnDestroy {
 
   constructor(
     private produtoService: ProdutoService,
-    private router: Router
+    private router: Router,
+    private vendaService: VendaService
   ) { }
 
   ngOnInit() {
@@ -62,6 +63,9 @@ export class DetalheProdutoComponent implements OnInit, OnDestroy {
         this.produto = res;
         this.produtoEdit = {...res};
         this.isEdit = false;
+        this.produtoService.gravarProdutoSubject(res);
+        this.vendaService.removeItemOnEdit(res);
+        alert("Item Editado, e lista de compra atualizada")
       },
       error: (err: any) => {
         alert(err.message);

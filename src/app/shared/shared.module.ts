@@ -12,6 +12,7 @@ import { EspecialCharPreventDirective } from './diretivas/especial-char-prevent.
 import { MaskDateDirective } from './diretivas/mask-date.directive';
 import { ResumoCompraComponent } from './components/resumo-compra/resumo-compra.component';
 import { RouterModule } from '@angular/router';
+import { DtValidatorDirective } from './diretivas/dtValidator.directive';
 
 @NgModule({
   declarations: [
@@ -23,7 +24,8 @@ import { RouterModule } from '@angular/router';
     MascaraCpfDirective,
     EspecialCharPreventDirective,
     MaskDateDirective,
-    ResumoCompraComponent
+    ResumoCompraComponent,
+    DtValidatorDirective
   ],
   imports: [
     CommonModule,
@@ -41,7 +43,8 @@ import { RouterModule } from '@angular/router';
     MascaraCpfDirective,
     EspecialCharPreventDirective,
     MaskDateDirective,
-    ResumoCompraComponent
+    ResumoCompraComponent,
+    DtValidatorDirective
   ]
 })
 export class SharedModule { }

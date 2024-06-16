@@ -4,6 +4,7 @@ import { Endereco } from "./Endereco";
 import { ProdutosVendios } from "./ProdutosVendios";
 
 export interface Venda {
+    id?: string;
     vendaId?: string; // tipo Guid/Uuid;
     status: string;
     valorTotal: number;

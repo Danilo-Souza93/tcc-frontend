@@ -22,7 +22,13 @@
     border-bottom: 1px solid rgb(86, 86, 86, 0.3);
 }
 
-// .input {
-//     background-color: transparent;
-//     border: none;
-// }
+.btn {
+    width: 10vw;
+    border-radius: 20px;
+    border: none;
+    color: white;
+
+    &:hover {
+        opacity: 0.8;
+    }
+}

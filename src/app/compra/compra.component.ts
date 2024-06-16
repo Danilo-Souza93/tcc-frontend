@@ -18,7 +18,7 @@ import { cpfValidator } from '../shared/diretivas/cpf-validator.directive';
 })
 export class CompraComponent implements OnInit, OnDestroy {
 
-  currentStep = 1;
+  currentStep = 3;
   estadosList = ESTADOS;
 
   dadosForm: FormGroup;

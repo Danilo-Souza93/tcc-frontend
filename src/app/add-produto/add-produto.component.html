@@ -90,6 +90,7 @@
                     (produto.get('dt_lote')?.touched || produto.get('dt_lote')?.dirty)"
                   maxlength="10"
                   type="date"
+                  DtValidatorDirective
                 /> 
                 <span 
                   *ngIf="produto.get('dt_lote')?.errors?.['minlength'] ||

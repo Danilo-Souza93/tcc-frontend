@@ -60,8 +60,6 @@
 </div>
 
 <div *ngIf="showForm" class="espaco-lateral d-flex flex-column justify-content-center align-items-center mt-5 p-5 w-100">
-  
-
   <form class="w-70" [formGroup]="paymentForm" (ngSubmit)="onSubmit()">
     <div formGroupName="cartao">
       <div class="d-flex w-70 mb-4">
@@ -88,17 +86,17 @@
               id="numeroCartao"
               formControlName="numeroCartao"
               class="form-control"
-              [class.error]="paymentForm.get('cartao.numeroCartao')?.invalid &&
-                (paymentForm.get('numeroCartao')?.dirty || paymentForm.get('numeroCartao')?.touched)"
+              [ngClass]="{'error': paymentForm.get('cartao.numeroCartao')?.invalid &&
+                (paymentForm.get('cartao.numeroCartao')?.dirty || paymentForm.get('cartao.numeroCartao')?.touched)}"
               placeholder="Digite o Número do Cartão"
               maxlength="16"
               EspecialCharPrevent
             />
             <div
               *ngIf="
-                paymentForm.get('numeroCartao')?.invalid &&
-                (paymentForm.get('numeroCartao')?.dirty ||
-                paymentForm.get('numeroCartao')?.touched)"
+                paymentForm.get('cartao.numeroCartao')?.invalid &&
+                (paymentForm.get('cartao.numeroCartao')?.dirty ||
+                paymentForm.get('cartao.numeroCartao')?.touched)"
               class="text-danger">
               <div *ngIf="paymentForm.get('cartao.numeroCartao')?.errors?.['required']">
                 Número do cartão é obrigatório.
@@ -115,14 +113,14 @@
               formControlName="codigoSeguranca"
               class="form-control"
               [class.error]="paymentForm.get('cartao.codigoSeguranca')?.invalid &&
-                (paymentForm.get('codigoSeguranca')?.dirty || paymentForm.get('codigoSeguranca')?.touched)"
+                (paymentForm.get('cartao.codigoSeguranca')?.dirty || paymentForm.get('cartao.codigoSeguranca')?.touched)"
               placeholder="codigoSeguranca"
               maxlength="3"
               EspecialCharPrevent
             />
             <div
               *ngIf="paymentForm.get('cartao.codigoSeguranca')?.invalid &&
-                (paymentForm.get('codigoSeguranca')?.dirty || paymentForm.get('codigoSeguranca')?.touched)"
+                (paymentForm.get('cartao.codigoSeguranca')?.dirty || paymentForm.get('cartao.codigoSeguranca')?.touched)"
               class="text-danger"
             >
               <div *ngIf="paymentForm.get('cartao.codigoSeguranca')?.errors?.['required']">
@@ -140,15 +138,16 @@
             <input
               id="nomeCartao"
               formControlName="nomeCartao"
-              class="form-control text-start"
-              [class.error]="paymentForm.get('cartao.nomeCartao')?.invalid &&
-              (paymentForm.get('nomeCartao')?.dirty || paymentForm.get('nomeCartao')?.touched)"
+              class="text-start form-control error"
+              [ngClass]="{'error': paymentForm.get('cartao.nomeCartao')?.invalid &&
+              (paymentForm.get('cartao.nomeCartao')?.dirty || paymentForm.get('cartao.nomeCartao')?.touched)}"
               placeholder="Titular"
-              
+              EspecialCharPrevent
             />
+
             <div
               *ngIf="paymentForm.get('cartao.nomeCartao')?.invalid &&
-                (paymentForm.get('nomeCartao')?.dirty || paymentForm.get('nomeCartao')?.touched)"
+                (paymentForm.get('cartao.nomeCartao')?.dirty || paymentForm.get('cartao.nomeCartao')?.touched)"
               class="text-danger"
             >
               <div *ngIf="paymentForm.get('cartao.nomeCartao')?.errors?.['required']">
@@ -163,7 +162,7 @@
               formControlName="dtValidade"
               class="form-control"
               [class.error]="paymentForm.get('cartao.dtValidade')?.invalid &&
-                (paymentForm.get('dtValidade')?.dirty || paymentForm.get('dtValidade')?.touched)"
+                (paymentForm.get('cartao.dtValidade')?.dirty || paymentForm.get('cartao.dtValidade')?.touched)"
               placeholder="MM/AA"
               maxlength="5"
               MaskDate
@@ -171,7 +170,7 @@
             />
             <div
               *ngIf="paymentForm.get('cartao.dtValidade')?.invalid &&
-                (paymentForm.get('dtValidade')?.dirty || paymentForm.get('dtValidade')?.touched)"
+                (paymentForm.get('cartao.dtValidade')?.dirty || paymentForm.get('cartao.dtValidade')?.touched)"
               class="text-danger">
               <div *ngIf="paymentForm.get('cartao.dtValidade')?.errors?.['required']">
                 Data de validade é obrigatória.

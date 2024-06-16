@@ -1,5 +1,5 @@
 import { VendaService } from './../../services/venda.service';
-import { DadosPagamento, Cartao } from './../../models/DadosPagamento';
+import { DadosPagamento } from './../../models/DadosPagamento';
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { BANDEIRA } from '../../models/Bandeira';
@@ -37,7 +37,7 @@ export class CartaoComponent implements OnInit, OnChanges {
     this.paymentForm = this.fb.group({
       cartao: this.fb.group({
         numeroCartao: [this.dadosPagamento.cartao.numeroCartao, [Validators.required, Validators.pattern(/^\d{16}$/)]],
-        nomeCartao: [this.dadosPagamento.cartao.nomeCartao, [Validators.required]],
+        nomeCartao: [this.dadosPagamento.cartao.nomeCartao, [Validators.required, Validators.minLength(2), Validators.pattern(/([a-zA-Z])/)]],
         dtValidade: [this.dadosPagamento.cartao.dtValidade, [Validators.required, Validators.pattern(/^(0[1-9]|1[0-2])\/?([0-9]{4}|[0-9]{2})$/)]],
         codigoSeguranca: [this.dadosPagamento.cartao.codigoSeguranca, [Validators.required, Validators.pattern(/^\d{3}$/)]],
         bandeira:[this.dadosPagamento.cartao.bandeira, Validators.required],
@@ -74,5 +74,4 @@ export class CartaoComponent implements OnInit, OnChanges {
       this.vendaService.imgSelecionada = this.imgSelecionada || '';
     }
   }
-
 }

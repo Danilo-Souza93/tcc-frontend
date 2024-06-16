@@ -207,7 +207,7 @@
               id="numero"
               class="w-100 form-control ps-2 input"
               [class.error]="
-                !dadosForm.get('endereco.numero')?.valid && dadosForm.get('endereco.numero')?.value > 0 &&
+                !dadosForm.get('endereco.numero')?.valid && dadosForm.get('endereco.numero')?.value == 0 &&
                 (dadosForm.get('endereco.numero')?.touched ||  dadosForm.get('endereco.numero')?.dirty)"
               formControlName="numero"
               placeholder="Numero"

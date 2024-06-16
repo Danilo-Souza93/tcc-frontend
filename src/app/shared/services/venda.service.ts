@@ -45,14 +45,14 @@ export class VendaService {
   constructor(private http: HttpClient) { }
 
   gravarProdutoVenda(produto: Produto): void {
+    console.log(produto);
+    
     // adicionando produtos na venda
     let produtoListado = this.produtoList.find(x => x.id == produto.id);
     let produtoVendido = this.listaProdutosVendidos.find(x => x.produtoId == produto.id);
-
     if(produtoListado && produtoVendido){
       //Controle carrinho
       produtoListado.quantidade += 1;
-      produtoListado.valor = produtoListado.quantidade*produto.valor;
       //Controle Venda
       produtoVendido.quantidade += 1;
     }else {
@@ -62,8 +62,9 @@ export class VendaService {
       //Controle carrinho
       produtoCarrinho.id = produto.id;
       produtoCarrinho.nome = produto.nome;
+      produtoCarrinho.valor = produto.valor;
       produtoCarrinho.quantidade = 1;
-      produtoCarrinho.valor = produto.valor
+
       this.produtoList.push(produtoCarrinho);
       
       //Controle Venda
@@ -79,6 +80,10 @@ export class VendaService {
   removerProduto(produto: ProdutosCarinho): void {
     this.produtoList = this.produtoList.filter(x => x.id !== produto.id);
     this.listaProdutosVendidos = this.listaProdutosVendidos.filter(x => x.produtoId !== produto.id);
+
+    console.log("produtoList", this.produtoList);
+    console.log("listaProdutosVendidos", this.listaProdutosVendidos);
+    
     this.calcularValor();
     this.vendaProdutoSubject.next(this.produtoList);
   }
@@ -88,13 +93,14 @@ export class VendaService {
     let produtoVendido = this.listaProdutosVendidos.find(x => x.produtoId == produto.id);
 
     if(produtoCarrinho && produtoVendido){
-      produtoCarrinho.quantidade -= 1;
-      produtoCarrinho.valor = produtoCarrinho.quantidade * (produto.valor / (produto.quantidade + 1));
-      
+      produtoCarrinho.quantidade -= 1;    
       produtoVendido.quantidade -=1;
 
       if(produtoCarrinho.quantidade == 0) this.removerProduto(produto);
     }
+
+    console.log("produtoList", this.produtoList);
+    console.log("listaProdutosVendidos", this.listaProdutosVendidos);
 
     this.calcularValor();
     this.vendaProdutoSubject.next(this.produtoList);
@@ -103,11 +109,12 @@ export class VendaService {
   calcularValor(): void {
     let valor = 0;
     this.produtoList.forEach(produto => {
-      valor += produto.valor;
+      valor += produto.valor * produto.quantidade;
     });
 
     this.venda.valorTotal = valor;
   }
+
   pegarListaProdutoVenda(): Observable<Array<ProdutosCarinho>> {
     return this.vendaProdutoSubject.asObservable();
   }
@@ -136,6 +143,19 @@ export class VendaService {
     return this.vendaEnderecoSubject.asObservable();
   }
 
+  removeItemOnEdit(produto: Produto) {
+    let produtoCarrinho = this.produtoList.find(x => x.id == produto.id);
+    
+    if(produtoCarrinho?.valor != produto.valor) {
+      this.produtoList = this.produtoList.filter(x => x.id !== produto.id);
+      this.listaProdutosVendidos = this.listaProdutosVendidos.filter(x => x.produtoId !== produto.id);
+
+      this.vendaProdutoSubject.next(this.produtoList);
+      this.calcularValor();
+    }
+  }
+
+  //Metodos Http
   public criarVenda(): Observable<any> {
     this.venda.dadosPagamento = this.vendaPagamentoSubject.value;
     this.venda.dadosPessoais = this.vendaDadosPessoaisSubject.value;
@@ -147,5 +167,13 @@ export class VendaService {
 
   public buscarVenda(vendaId: string): Observable<DetalheVenda> {
     return this.http.get<DetalheVenda>(`${this.API}/${vendaId}`);
+  }
+
+  public updateStatusVenda(venda: Venda): Observable<string> {
+    return this.http.put<string>(`${this.API}`, venda);
+  }
+
+  public deleteVenda(id: string): Observable<any> {
+    return this.http.delete<any>(`${this.API}/${id}`);
   }
 }
