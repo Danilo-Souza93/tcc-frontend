@@ -1,6 +1,7 @@
+import { Subscription } from 'rxjs';
 import { VendaService } from './../../services/venda.service';
 import { DadosPagamento } from './../../models/DadosPagamento';
-import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { BANDEIRA } from '../../models/Bandeira';
 
@@ -9,11 +10,13 @@ import { BANDEIRA } from '../../models/Bandeira';
   templateUrl: './cartao.component.html',
   styleUrls: ['./cartao.component.scss']
 })
-export class CartaoComponent implements OnInit, OnChanges {
+export class CartaoComponent implements OnInit, OnChanges, OnDestroy {
 
   @Output() nextStep = new EventEmitter<void>();
   @Input() dadosPagamento = {} as DadosPagamento;
   @Input() showForm: boolean = true;
+
+  subscription = new Subscription();
 
   paymentForm: FormGroup;
   tipoCartao: Array<string>;
@@ -46,13 +49,25 @@ export class CartaoComponent implements OnInit, OnChanges {
     });
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
+    this.subscription.add( 
+      this.vendaService.pegarDadosPagamento().subscribe(res => {
+        if(res.cartao) {
+          this.dadosPagamento = res;
+          this.createForm();
+        }
+      })
+    );
   }
 
-  ngOnChanges(changes: SimpleChanges) {
+  ngOnChanges(changes: SimpleChanges): void {
     if (changes['dadosPagamento'] && changes['dadosPagamento'].currentValue) {
       this.createForm();
     }
+  }
+
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
   }
 
   createForm() {

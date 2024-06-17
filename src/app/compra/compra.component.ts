@@ -181,15 +181,15 @@ export class CompraComponent implements OnInit, OnDestroy {
   finalizarCompra():void {
     this.vendaService.criarVenda().subscribe({
       next: (res: any) => {
-        console.log(res);
         alert("VENDA CRIADA, Cédigo: "+res.vendaId);
+        this.vendaService.limparObservables(true);
         this.router.navigate(['/home']);
       },
       error: (err: any) => {
-        console.log(err);
         alert("ERRO AO CRIAR VENDA");
       }
     });
     
   }
+
 }

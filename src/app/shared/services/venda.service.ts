@@ -40,13 +40,61 @@ export class VendaService {
   private vendaPagamentoSubject = new BehaviorSubject<DadosPagamento>({} as DadosPagamento);
   private vendaDadosPessoaisSubject = new BehaviorSubject<DadosPessoais>({} as DadosPessoais);
   private vendaEnderecoSubject = new BehaviorSubject<Endereco>({} as Endereco);
-  private vendaSubject = new BehaviorSubject<Venda>(this.venda);
 
   constructor(private http: HttpClient) { }
 
-  gravarProdutoVenda(produto: Produto): void {
-    console.log(produto);
-    
+  pegarListaProdutoVenda(): Observable<Array<ProdutosCarinho>> {
+    return this.vendaProdutoSubject.asObservable();
+  }
+
+  gravarDadosPagamentos(dadosPagamento: DadosPagamento): void {
+    this.vendaPagamentoSubject.next(dadosPagamento);
+  }
+
+  pegarDadosPagamento(): Observable<DadosPagamento> {
+    return this.vendaPagamentoSubject.asObservable();
+  }
+
+  gravarDadosPessoais(dadosPessoais: DadosPessoais): void {
+    this.vendaDadosPessoaisSubject.next(dadosPessoais);
+  }
+
+  pegarDadosPessoais(): Observable<DadosPessoais> {
+    return this.vendaDadosPessoaisSubject.asObservable();
+  }
+
+  gravarEndereco(endereco: Endereco):void {
+    this.vendaEnderecoSubject.next(endereco);
+  }
+
+  pegarEndereco(): Observable<Endereco> {
+    return this.vendaEnderecoSubject.asObservable();
+  }
+
+  limparObservables(isTodos: boolean, nomeDoObservable?: string): void {
+    if(isTodos) {
+      this.vendaProdutoSubject = new BehaviorSubject<Array<ProdutosCarinho>>(new Array<ProdutosCarinho>());
+      this.vendaPagamentoSubject = new BehaviorSubject<DadosPagamento>({} as DadosPagamento);
+      this.vendaDadosPessoaisSubject = new BehaviorSubject<DadosPessoais>({} as DadosPessoais);
+      this.vendaEnderecoSubject = new BehaviorSubject<Endereco>({} as Endereco);
+
+      return;
+    }
+
+    switch(nomeDoObservable) {
+      case('produto'): this.vendaProdutoSubject = new BehaviorSubject<Array<ProdutosCarinho>>(new Array<ProdutosCarinho>()); 
+        break;
+      case('pagamento'):  this.vendaPagamentoSubject = new BehaviorSubject<DadosPagamento>({} as DadosPagamento); 
+        break;
+      case('dadospessoais'): this.vendaDadosPessoaisSubject = new BehaviorSubject<DadosPessoais>({} as DadosPessoais); 
+        break;
+      case('endereco'): this.vendaEnderecoSubject = new BehaviorSubject<Endereco>({} as Endereco);
+       break;
+      default: break;
+    }
+  }
+
+  gravarProdutoVenda(produto: Produto): void {  
     // adicionando produtos na venda
     let produtoListado = this.produtoList.find(x => x.id == produto.id);
     let produtoVendido = this.listaProdutosVendidos.find(x => x.produtoId == produto.id);
@@ -80,10 +128,6 @@ export class VendaService {
   removerProduto(produto: ProdutosCarinho): void {
     this.produtoList = this.produtoList.filter(x => x.id !== produto.id);
     this.listaProdutosVendidos = this.listaProdutosVendidos.filter(x => x.produtoId !== produto.id);
-
-    console.log("produtoList", this.produtoList);
-    console.log("listaProdutosVendidos", this.listaProdutosVendidos);
-    
     this.calcularValor();
     this.vendaProdutoSubject.next(this.produtoList);
   }
@@ -98,10 +142,6 @@ export class VendaService {
 
       if(produtoCarrinho.quantidade == 0) this.removerProduto(produto);
     }
-
-    console.log("produtoList", this.produtoList);
-    console.log("listaProdutosVendidos", this.listaProdutosVendidos);
-
     this.calcularValor();
     this.vendaProdutoSubject.next(this.produtoList);
   }
@@ -113,34 +153,6 @@ export class VendaService {
     });
 
     this.venda.valorTotal = valor;
-  }
-
-  pegarListaProdutoVenda(): Observable<Array<ProdutosCarinho>> {
-    return this.vendaProdutoSubject.asObservable();
-  }
-
-  gravarDadosPagamentos(dadosPagamento: DadosPagamento): void {
-    this.vendaPagamentoSubject.next(dadosPagamento);
-  }
-
-  pegarDadosPagamento(): Observable<DadosPagamento> {
-    return this.vendaPagamentoSubject.asObservable();
-  }
-
-  gravarDadosPessoais(dadosPessoais: DadosPessoais): void {
-    this.vendaDadosPessoaisSubject.next(dadosPessoais);
-  }
-
-  pegarDadosPessoais(): Observable<DadosPessoais> {
-    return this.vendaDadosPessoaisSubject.asObservable();
-  }
-
-  gravarEndereco(endereco: Endereco):void {
-    this.vendaEnderecoSubject.next(endereco);
-  }
-
-  pegarEndereco(): Observable<Endereco> {
-    return this.vendaEnderecoSubject.asObservable();
   }
 
   removeItemOnEdit(produto: Produto) {
@@ -160,6 +172,7 @@ export class VendaService {
     this.venda.dadosPagamento = this.vendaPagamentoSubject.value;
     this.venda.dadosPessoais = this.vendaDadosPessoaisSubject.value;
     this.venda.endereco = this.vendaEnderecoSubject.value;
+    this.venda.produtosVendidos = this.listaProdutosVendidos;
     this.venda.status = "Aberta";
 
     return this.http.post<string>(`${this.API}`, this.venda);

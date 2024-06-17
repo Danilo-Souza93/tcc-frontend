@@ -57,7 +57,6 @@ export class DetalheProdutoComponent implements OnInit, OnDestroy {
   }
 
   editarProduto() {
-    console.log(this.produto);
     this.produtoService.putProduto(this.produto).subscribe({
       next: (res: Produto) => {
         this.produto = res;
