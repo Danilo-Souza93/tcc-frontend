@@ -14,27 +14,22 @@ const routes: Routes = [
   },
   {
     path:'home',
-    component: AppComponent,
     loadChildren: () => import('./apresentacao/apresentacao.module').then(m => m.ApresentacaoModule)
   },
   {
     path: 'detalhe-produto',
-    component: DetalheProdutoComponent,
     loadChildren: () => import('./detalhe-produto/detalhe-produto.module').then(m => m.DetalheProdutoModule)
   },
   {
     path: 'compra',
-    component: CompraComponent,
     loadChildren: () => import('./compra/compra.module').then(m => m.CompraModule)
   },
   {
     path:'add-produto',
-    component:AddProdutoComponent,
     loadChildren: ()=> import('./add-produto/add-produto.module').then(m => m.AddProdutoModule)
   },
   {
     path:'buscar-venda',
-    component: BuscarVendaComponent,
     loadChildren: () => import('./buscar-venda/buscar-venda.module').then(m => m.BuscarVendaModule)
   }
 ];
