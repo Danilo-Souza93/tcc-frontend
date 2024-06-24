@@ -9,7 +9,7 @@ import { Produto } from '../models/Produto';
 })
 export class ProdutoService {
 
-  private readonly API = environment.api+'/Produto'
+  private readonly API = environment.api+'/Produto';
 
   private produtoSubject = new BehaviorSubject<Produto>({} as Produto);
   

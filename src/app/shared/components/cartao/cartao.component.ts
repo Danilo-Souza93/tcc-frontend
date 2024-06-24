@@ -41,7 +41,7 @@ export class CartaoComponent implements OnInit, OnChanges, OnDestroy {
       cartao: this.fb.group({
         numeroCartao: [this.dadosPagamento.cartao.numeroCartao, [Validators.required, Validators.pattern(/^\d{16}$/)]],
         nomeCartao: [this.dadosPagamento.cartao.nomeCartao, [Validators.required, Validators.minLength(2), Validators.pattern(/([a-zA-Z])/)]],
-        dtValidade: [this.dadosPagamento.cartao.dtValidade, [Validators.required, Validators.pattern(/^(0[1-9]|1[0-2])\/?([0-9]{4}|[0-9]{2})$/)]],
+        dtValidade: [this.dadosPagamento.cartao.dtValidade, [Validators.required, Validators.pattern(/^(0[1-9]|1[0-2])\/?([0-9]{2})$/)]],
         codigoSeguranca: [this.dadosPagamento.cartao.codigoSeguranca, [Validators.required, Validators.pattern(/^\d{3}$/)]],
         bandeira:[this.dadosPagamento.cartao.bandeira, Validators.required],
         tipo:[this.dadosPagamento.cartao.tipo, Validators.required],

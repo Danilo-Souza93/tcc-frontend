@@ -9,8 +9,8 @@ export class EspecialCharPreventDirective {
 
   @HostListener('keydown', ['$event']) onKeyDown(event: KeyboardEvent) {
     const allowedKeys = ['Backspace', 'Tab'];
-    const isLetter = /^[a-zA-Z]$/;
-    const isNumber = /^[0-9]$/;
+    const isLetter = /^[a-zA-Z\s]$/;
+    const isNumber = /^[0-9z\s]$/;
     
     if (!isNumber.test(event.key) && !isLetter.test(event.key) && !allowedKeys.includes(event.key)) {
       event.preventDefault();

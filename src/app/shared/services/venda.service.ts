@@ -16,7 +16,7 @@ import { DetalheVenda } from '../models/DetalheVenda';
 })
 export class VendaService {
 
-  private readonly API = environment.api+'/Vendas'
+  private readonly API = environment.api+'/Vendas';
 
   produtoList = new Array<ProdutosCarinho>();
   endereco = {} as Endereco;
@@ -123,6 +123,19 @@ export class VendaService {
 
     this.calcularValor();
     this.vendaProdutoSubject.next(this.produtoList);
+  }
+
+  acrescetarItemCompra(produto: ProdutosCarinho): void {
+    let produtoCarrinho = this.produtoList.find(x => x.id == produto.id);
+    let produtoVendido = this.listaProdutosVendidos.find(x => x.produtoId == produto.id);
+
+    if(produtoCarrinho && produtoVendido){
+      produtoCarrinho.quantidade += 1;
+      produtoVendido.quantidade +=1;
+
+      this.calcularValor();
+      this.vendaProdutoSubject.next(this.produtoList);
+    }
   }
 
   removerProduto(produto: ProdutosCarinho): void {

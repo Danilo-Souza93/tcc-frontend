@@ -16,6 +16,24 @@ export class DtValidatorDirective {
     const parts = dateValue.split('/');
     const currentYear = new Date().getFullYear();
 
+    if(parts.length === 2 && parts[1].length === 2){
+      // MM/YY
+      const currentYear2 = new Date().getFullYear() % 100;
+      const [month, year] = parts.map((part: any) => parseInt(part, 10));
+      const isValidMonth = month >= 1 && month <= 12;
+      const isValidYear = year >= currentYear2;
+
+      if (!isValidMonth) {
+        return { invalidMonth: true };
+      }
+
+      if (!isValidYear) {
+        return { invalidYear: true };
+      }
+
+      return null;
+    }
+
     if (parts.length === 2) {
       // MM/YYYY format
       const [month, year] = parts.map((part: any) => parseInt(part, 10));

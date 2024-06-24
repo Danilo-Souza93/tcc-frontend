@@ -35,6 +35,11 @@ export class ResumoCompraComponent implements OnInit {
     this.valorTotal = this.vendaService.venda.valorTotal;
   }
 
+  acrescetarItem(item: ProdutosCarinho): void {
+    this.vendaService.acrescetarItemCompra(item);
+    this.valorTotal = this.vendaService.venda.valorTotal;
+  }
+
   reduzirItem(item: ProdutosCarinho): void {
     this.vendaService.removeItemCompra(item);
     this.valorTotal = this.vendaService.venda.valorTotal;

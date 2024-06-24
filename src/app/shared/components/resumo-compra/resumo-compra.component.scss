@@ -4,6 +4,9 @@
     border: none;
     border-radius: 20px;
     color: white;
+    &:hover{
+        opacity: 0.2;
+    }
 
     &-adicionar {
         background-color: rgba(252, 195, 2, 0.5);
